@@ -62,26 +62,26 @@ export function ExpressInterestForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-[var(--color-plum)]">Name *</Label>
-          <Input id="name" name="name" required placeholder="Your name" />
+          <Input id="name" name="name" required placeholder="Your name" maxLength={100} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="email" className="text-[var(--color-plum)]">Email *</Label>
-          <Input id="email" name="email" type="email" required placeholder="you@company.com" />
+          <Input id="email" name="email" type="email" required placeholder="you@company.com" maxLength={254} />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="company" className="text-[var(--color-plum)]">Company *</Label>
-          <Input id="company" name="company" required placeholder="Company name" />
+          <Input id="company" name="company" required placeholder="Company name" maxLength={200} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="role" className="text-[var(--color-plum)]">Role / Title</Label>
-          <Input id="role" name="role" placeholder="e.g. CTO, VP Engineering" />
+          <Input id="role" name="role" placeholder="e.g. CTO, VP Engineering" maxLength={100} />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="message" className="text-[var(--color-plum)]">Message</Label>
-        <Textarea id="message" name="message" placeholder="Tell us about your AI transformation goals..." rows={4} />
+        <Textarea id="message" name="message" placeholder="Tell us about your AI transformation goals..." rows={4} maxLength={2000} />
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <Button
