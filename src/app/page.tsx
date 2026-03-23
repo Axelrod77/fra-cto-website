@@ -10,29 +10,29 @@ export default function HomePage() {
     <div className="min-h-screen bg-background flex flex-col">
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="py-20 md:py-28 px-6">
+      {/* Hero — dark navy for premium impact */}
+      <section className="py-20 md:py-28 px-6 bg-[var(--color-navy)]">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-periwinkle-lighter)] text-[var(--color-plum)] text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-navy-mid)] text-[var(--color-teal)] text-sm font-medium mb-6 border border-[var(--color-teal)]/20">
             Fractional CTO for Enterprise AI
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--color-plum)] mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
             It looks like AI.<br />
             It works because of the<br />
-            <span className="text-[var(--color-periwinkle)]">human inside.</span>
+            <span className="text-[var(--color-teal)]">human inside.</span>
           </h1>
-          <p className="text-lg text-[var(--color-muted-foreground)] max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-lg text-[#78909C] max-w-2xl mx-auto mb-10 leading-relaxed">
             Independent advisory for enterprises navigating AI transformation.
             No vendor bias. No headcount incentives. Just honest strategy and embedded execution.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/quick-scan">
-              <Button size="lg" className="bg-[var(--color-plum)] hover:bg-[var(--color-plum-light)] text-white px-8 h-12">
+              <Button size="lg" className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-8 h-12">
                 Take the Quick Scan
               </Button>
             </Link>
             <Link href="/express-interest">
-              <Button size="lg" variant="outline" className="border-[var(--color-plum)] text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)] px-8 h-12">
+              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 px-8 h-12">
                 Express Interest
               </Button>
             </Link>
@@ -65,7 +65,7 @@ export default function HomePage() {
                 desc: "CIOs freeze on failure stats. Teams resist change. Nobody owns the cross-cutting work.",
               },
             ].map((item) => (
-              <Card key={item.title} className="border-border/50">
+              <Card key={item.title} className="border-border/50 border-l-[3px] border-l-[var(--color-teal)]">
                 <CardContent className="pt-6">
                   <h3 className="font-semibold text-[var(--color-plum)] mb-2">{item.title}</h3>
                   <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">{item.desc}</p>
@@ -107,7 +107,7 @@ export default function HomePage() {
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-[var(--color-periwinkle-lighter)] text-[var(--color-plum)] font-bold text-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 rounded-full bg-[var(--color-teal)] text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
                   {item.step}
                 </div>
                 <h3 className="font-semibold text-[var(--color-plum)] mb-2 text-lg">{item.title}</h3>
@@ -152,7 +152,7 @@ export default function HomePage() {
                 credential: "MBA, IIM & B.E. IIT Delhi",
               },
             ].map((founder) => (
-              <Card key={founder.role} className="border-border/50">
+              <Card key={founder.role} className="border-border/50 border-t-[3px] border-t-[var(--color-teal)]">
                 <CardContent className="pt-6">
                   <h3 className="font-bold text-[var(--color-plum)] text-lg mb-3">{founder.role}</h3>
                   <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-4">{founder.desc}</p>
@@ -244,15 +244,15 @@ export default function HomePage() {
       </section>
 
       {/* Express Interest Form */}
-      <section id="express-interest" className="py-16 px-6 bg-[var(--color-muted)]">
+      <section id="express-interest" className="py-16 px-6 bg-[var(--color-navy)]">
         <div className="max-w-xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-3 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 text-center">
             Express Interest
           </h2>
-          <p className="text-[var(--color-muted-foreground)] text-center mb-8">
+          <p className="text-[#78909C] text-center mb-8">
             Tell us about your organization and we&apos;ll reach out to discuss how we can help.
           </p>
-          <Card className="border-border/50">
+          <Card className="border-none shadow-lg">
             <CardContent className="pt-6">
               <ExpressInterestForm />
             </CardContent>

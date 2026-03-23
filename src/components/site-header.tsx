@@ -21,7 +21,7 @@ export function SiteHeader() {
             </Button>
           </Link>
           <Link href="/express-interest">
-            <Button className="bg-[var(--color-plum)] hover:bg-[var(--color-plum-light)] text-white">
+            <Button className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white">
               Express Interest
             </Button>
           </Link>

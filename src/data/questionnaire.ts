@@ -425,8 +425,8 @@ export const maturityLevels = [
   { level: 1, min: 1.0, max: 1.8, label: "Foundational", description: "Minimal digital capabilities. Manual processes, no strategy.", color: "#e74c3c" },
   { level: 2, min: 1.9, max: 2.6, label: "Emerging", description: "Some awareness and pockets of effort. Inconsistent, fragmented.", color: "#e67e22" },
   { level: 3, min: 2.7, max: 3.4, label: "Developing", description: "Structured efforts underway. Key areas being addressed but gaps remain.", color: "#f1c40f" },
-  { level: 4, min: 3.5, max: 4.2, label: "Advanced", description: "Strong capabilities across most dimensions. Ready for strategic AI.", color: "#8B8FCF" },
-  { level: 5, min: 4.3, max: 5.0, label: "Leading", description: "Mature, integrated digital organization. AI-native practices.", color: "#3D1F3E" },
+  { level: 4, min: 3.5, max: 4.2, label: "Advanced", description: "Strong capabilities across most dimensions. Ready for strategic AI.", color: "#0097A7" },
+  { level: 5, min: 4.3, max: 5.0, label: "Leading", description: "Mature, integrated digital organization. AI-native practices.", color: "#0D1B2A" },
 ];
 
 export const dimensions = [
