@@ -52,9 +52,10 @@ website/
 ## Express Interest Form
 - **Service:** Web3Forms (free, 250 emails/mo)
 - **Env var:** `NEXT_PUBLIC_WEB3FORMS_KEY` (set in Cloudflare Pages env vars)
-- **Fields:** Name*, Email*, Company*, Role/Title, Message
+- **Fields:** Name* (100), Email* (254), Company* (200), Role/Title (100), Message (2000) — all have `maxLength` limits
 - Shows success checkmark on submit, error message on failure
 - Gracefully handles missing key (shows note instead of breaking)
+- `NEXT_PUBLIC_WEB3FORMS_KEY` is intentionally client-side (public form key, like Firebase config — security via domain allowlisting, not key secrecy)
 
 ## Quick Scan Details
 - 14 questions (not 10 like portal originally had — expanded to 12 dimensions)
@@ -86,6 +87,12 @@ Key visual changes:
 - **Teal step circles** in How It Works
 - **Dark navy Express Interest section** at bottom of home page
 - CSS vars use legacy `--color-plum` / `--color-periwinkle` aliases pointing to new values so existing component code doesn't need rewriting
+- **Outline buttons on dark sections** need explicit `bg-transparent` — shadcn's `outline` variant applies `bg-background` (white) which makes white text invisible on navy backgrounds
+
+## Security Posture
+- **Rate limiting:** N/A — pure static site, no server endpoints. Cloudflare CDN provides DDoS protection. Web3Forms rate-limits on their end (250/mo free tier).
+- **Input validation:** HTML `required` + `type="email"` + `maxLength` on all form fields. React JSX auto-escapes output (no XSS surface). No `dangerouslySetInnerHTML` anywhere.
+- **API keys:** Only `NEXT_PUBLIC_WEB3FORMS_KEY` — intentionally public. No hardcoded secrets in source. OWASP compliant.
 
 ## Design Decisions
 - No pricing shown on website (removed per founder request)
