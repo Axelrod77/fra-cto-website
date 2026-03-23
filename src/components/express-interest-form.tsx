@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +10,15 @@ import { Label } from "@/components/ui/label";
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "";
 
 export function ExpressInterestForm() {
+  const searchParams = useSearchParams();
+  const score = searchParams.get("score");
+  const level = searchParams.get("level");
+  const dims = searchParams.get("dims");
+
+  const scoreSummary = score && level
+    ? `Quick Scan Score: ${score}/5.0 (${level})${dims ? `\n\nDimension Scores:\n${dims.split(',').map(d => {const [name, val] = d.split(':'); return `  ${name}: ${val}/5.0`;}).join('\n')}` : ''}`
+    : "";
+
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +31,13 @@ export function ExpressInterestForm() {
     const form = e.currentTarget;
     const data = new FormData(form);
     data.append("access_key", WEB3FORMS_KEY);
-    data.append("subject", "New FraCTO Express Interest");
+    data.append("subject", score
+      ? `FraCTO Express Interest — Score ${score}/5.0 (${level})`
+      : "New FraCTO Express Interest"
+    );
+    if (scoreSummary) {
+      data.append("Quick Scan Results", scoreSummary);
+    }
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
@@ -59,6 +75,16 @@ export function ExpressInterestForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {scoreSummary && (
+        <div className="rounded-lg bg-[var(--color-muted)] border border-border/50 p-4 mb-2">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-medium text-[var(--color-periwinkle)] uppercase tracking-wide">Your Quick Scan Results</span>
+          </div>
+          <div className="text-2xl font-bold text-[var(--color-plum)]">
+            {score}/5.0 <span className="text-sm font-medium text-[var(--color-periwinkle)]">{level}</span>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-[var(--color-plum)]">Name *</Label>
@@ -81,7 +107,13 @@ export function ExpressInterestForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="message" className="text-[var(--color-plum)]">Message</Label>
-        <Textarea id="message" name="message" placeholder="Tell us about your AI transformation goals..." rows={4} maxLength={2000} />
+        <Textarea
+          id="message"
+          name="message"
+          placeholder={scoreSummary ? "Any additional context about your transformation goals..." : "Tell us about your AI transformation goals..."}
+          rows={4}
+          maxLength={2000}
+        />
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <Button

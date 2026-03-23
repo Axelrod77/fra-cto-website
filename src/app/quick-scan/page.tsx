@@ -183,7 +183,19 @@ function QuickScanInner() {
               </CardContent>
             </Card>
 
-            <h2 className="text-xl font-bold text-[var(--color-plum)] mb-4">Score by Dimension</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-[var(--color-plum)]">Score by Dimension</h2>
+              <Button
+                variant="ghost"
+                className="text-[var(--color-periwinkle)] hover:bg-[var(--color-periwinkle-lighter)] text-sm"
+                onClick={() => {
+                  const text = `FraCTO Quick Scan Results\nOverall: ${results.overall}/5.0 (${getMaturityLevel(results.overall).label})\n\n${results.dimensions.map(d => `${d.name}: ${d.score}/5.0 (${getMaturityLevel(d.score).label})`).join('\n')}`;
+                  navigator.clipboard.writeText(text);
+                }}
+              >
+                Copy Results
+              </Button>
+            </div>
             <div className="space-y-3 mb-10">
               {results.dimensions.map((dim) => (
                 <div key={dim.name} className="bg-white rounded-xl border border-border/50 p-4">
@@ -218,7 +230,7 @@ function QuickScanInner() {
                   expert interviews, architecture review, and a board-ready roadmap — all in 2-3 weeks.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Link href="/express-interest">
+                  <Link href={`/express-interest?score=${results.overall}&level=${encodeURIComponent(getMaturityLevel(results.overall).label)}&dims=${encodeURIComponent(results.dimensions.map(d => `${d.name}:${d.score}`).join(','))}`}>
                     <Button
                       size="lg"
                       className="bg-white text-[var(--color-plum)] hover:bg-white/90 px-8"

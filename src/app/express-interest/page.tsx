@@ -1,9 +1,12 @@
+"use client";
+
+import { Suspense } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ExpressInterestForm } from "@/components/express-interest-form";
 
-export default function ExpressInterestPage() {
+function ExpressInterestInner() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SiteHeader />
@@ -29,5 +32,19 @@ export default function ExpressInterestPage() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+export default function ExpressInterestPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-[var(--color-muted-foreground)]">Loading...</div>
+        </div>
+      }
+    >
+      <ExpressInterestInner />
+    </Suspense>
   );
 }

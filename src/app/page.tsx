@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -254,7 +255,9 @@ export default function HomePage() {
           </p>
           <Card className="border-none shadow-lg">
             <CardContent className="pt-6">
-              <ExpressInterestForm />
+              <Suspense fallback={<div className="py-8 text-center text-[var(--color-muted-foreground)]">Loading...</div>}>
+                <ExpressInterestForm />
+              </Suspense>
             </CardContent>
           </Card>
         </div>
