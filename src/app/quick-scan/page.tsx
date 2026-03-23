@@ -234,7 +234,7 @@ function QuickScanInner() {
                       setAnswers({});
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
-                    className="border-white/30 text-white hover:bg-white/10 px-8"
+                    className="border-white/30 text-white hover:bg-white/10 bg-transparent px-8"
                   >
                     Retake Quick Scan
                   </Button>
