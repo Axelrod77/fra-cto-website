@@ -143,7 +143,6 @@ export default function HomePage() {
               </thead>
               <tbody className="divide-y divide-border/50">
                 {[
-                  ["Diagnostic cost", "$15-25K", "$500K-2M", "Free (then lock-in)"],
                   ["Who does the work", "Senior embedded orchestrator", "Junior analysts", "Offshore teams"],
                   ["Stays to execute", "Yes — ongoing retainer", "No — delivers deck, leaves", "Sort of — bills forever"],
                   ["Vendor bias", "Independent", "Often sponsored", "Sells own stack"],
@@ -172,19 +171,16 @@ export default function HomePage() {
             {[
               {
                 title: "Diagnostic",
-                price: "$15-25K",
                 duration: "2-3 weeks",
                 items: ["Expert interviews", "Architecture review", "CMDB analysis", "3-horizon roadmap", "Board-ready deck"],
               },
               {
                 title: "Fractional CTO",
-                price: "$10-25K/mo",
                 duration: "Ongoing",
                 items: ["Embedded senior technologist", "Execution oversight", "Vendor evaluation", "Stakeholder navigation", "Quick wins from Week 1"],
               },
               {
                 title: "AI Projects",
-                price: "$30-75K+",
                 duration: "4-8 weeks",
                 items: ["AI skills deployment", "Automation program setup", "Custom AI solutions", "End-to-end delivery", "Knowledge transfer"],
               },
@@ -192,7 +188,6 @@ export default function HomePage() {
               <Card key={service.title} className="border-border/50 hover:border-[var(--color-periwinkle)] transition-colors">
                 <CardContent className="pt-6">
                   <h3 className="font-bold text-[var(--color-plum)] text-lg mb-1">{service.title}</h3>
-                  <div className="text-2xl font-bold text-[var(--color-periwinkle)] mb-1">{service.price}</div>
                   <div className="text-xs text-[var(--color-muted-foreground)] mb-4">{service.duration}</div>
                   <ul className="space-y-2">
                     {service.items.map((item) => (

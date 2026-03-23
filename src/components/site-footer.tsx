@@ -1,13 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-border/50 py-8 px-6 mt-auto">
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--color-muted-foreground)]">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-[var(--color-plum)] flex items-center justify-center">
-            <span className="text-white font-bold text-[10px]">F</span>
-          </div>
+          <Image src="/logo.svg" alt="FraCTO" width={20} height={20} className="w-5 h-5" />
           <span className="font-medium text-[var(--color-plum)]">FraCTO</span>
         </div>
         <div className="flex items-center gap-6">
