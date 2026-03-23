@@ -125,6 +125,45 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Founders */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-4 text-center">
+            Who&apos;s behind FraCTO
+          </h2>
+          <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-12">
+            Three founders with complementary expertise — enterprise IT, business building, and AI engineering.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                role: "Senior IT Leader",
+                desc: "Decades of experience leading IT transformations at scale. Has managed the exact vendor ecosystems, partner dynamics, and organizational politics that FraCTO helps clients navigate. Knows what good looks like — and what realistic looks like.",
+                credential: "MBA, SP Jain Inst of Mgmt.",
+              },
+              {
+                role: "Serial Entrepreneur",
+                desc: "Track record of building and scaling businesses. Brings commercial acumen, market positioning, and the ability to turn a capability into a business. Ensures FraCTO doesn't just advise — it delivers.",
+                credential: "MBA, INSEAD",
+              },
+              {
+                role: "AI-Native Technologist",
+                desc: "Functional and technical knowledge with AI-first thinking. Builds the assessment platform, designs the AI skills, and ensures every recommendation is technically sound and implementable.",
+                credential: "MBA, IIM & B.E. IIT Delhi",
+              },
+            ].map((founder) => (
+              <Card key={founder.role} className="border-border/50">
+                <CardContent className="pt-6">
+                  <h3 className="font-bold text-[var(--color-plum)] text-lg mb-3">{founder.role}</h3>
+                  <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-4">{founder.desc}</p>
+                  <div className="text-xs font-medium text-[var(--color-periwinkle)]">{founder.credential}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Differentiator */}
       <section className="py-16 px-6 bg-[var(--color-muted)]">
         <div className="max-w-4xl mx-auto">
