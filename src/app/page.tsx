@@ -1,65 +1,232 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { ExpressInterestForm } from "@/components/express-interest-form";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-background flex flex-col">
+      <SiteHeader />
+
+      {/* Hero */}
+      <section className="py-20 md:py-28 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-periwinkle-lighter)] text-[var(--color-plum)] text-sm font-medium mb-6">
+            Fractional CTO for Enterprise AI
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--color-plum)] mb-6 leading-tight">
+            It looks like AI.<br />
+            It works because of the<br />
+            <span className="text-[var(--color-periwinkle)]">human inside.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-[var(--color-muted-foreground)] max-w-2xl mx-auto mb-10 leading-relaxed">
+            Independent advisory for enterprises navigating AI transformation.
+            No vendor bias. No headcount incentives. Just honest strategy and embedded execution.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/quick-scan">
+              <Button size="lg" className="bg-[var(--color-plum)] hover:bg-[var(--color-plum-light)] text-white px-8 h-12">
+                Take the Quick Scan
+              </Button>
+            </Link>
+            <Link href="/express-interest">
+              <Button size="lg" variant="outline" className="border-[var(--color-plum)] text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)] px-8 h-12">
+                Express Interest
+              </Button>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* The Problem */}
+      <section className="py-16 px-6 bg-[var(--color-muted)]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-4 text-center">
+            Why enterprises get stuck
+          </h2>
+          <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-12">
+            Your Big IT partners have a conflict of interest. Automation cannibalizes their headcount model.
+            They&apos;ll slow-walk your transformation while billing for the delay.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "No honest assessment",
+                desc: "Legacy partners can't recommend eliminating roles they profit from.",
+              },
+              {
+                title: "Strategy without execution",
+                desc: "Consultancies deliver decks, then disappear. Plans collect dust.",
+              },
+              {
+                title: "Internal silos",
+                desc: "CIOs freeze on failure stats. Teams resist change. Nobody owns the cross-cutting work.",
+              },
+            ].map((item) => (
+              <Card key={item.title} className="border-border/50">
+                <CardContent className="pt-6">
+                  <h3 className="font-semibold text-[var(--color-plum)] mb-2">{item.title}</h3>
+                  <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">{item.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-12 text-center">
+            How it works
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "1",
+                title: "Quick Scan",
+                desc: "14 questions, 5 minutes. Get your digital maturity score across 12 dimensions. Free, no sign-up.",
+                cta: "Take Quick Scan",
+                href: "/quick-scan",
+              },
+              {
+                step: "2",
+                title: "Diagnostic",
+                desc: "Expert interviews, architecture review, gap analysis, and a board-ready roadmap. Fixed fee, 2-3 weeks.",
+                cta: null,
+                href: null,
+              },
+              {
+                step: "3",
+                title: "Fractional CTO",
+                desc: "A senior technologist embedded in your org. Not just advice — execution. Kill redundant tools, ship quick wins, navigate stakeholders.",
+                cta: null,
+                href: null,
+              },
+            ].map((item) => (
+              <div key={item.step} className="text-center">
+                <div className="w-12 h-12 rounded-full bg-[var(--color-periwinkle-lighter)] text-[var(--color-plum)] font-bold text-lg flex items-center justify-center mx-auto mb-4">
+                  {item.step}
+                </div>
+                <h3 className="font-semibold text-[var(--color-plum)] mb-2 text-lg">{item.title}</h3>
+                <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-4">{item.desc}</p>
+                {item.cta && item.href && (
+                  <Link href={item.href}>
+                    <Button variant="ghost" className="text-[var(--color-periwinkle)] hover:text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)]">
+                      {item.cta} &rarr;
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Differentiator */}
+      <section className="py-16 px-6 bg-[var(--color-muted)]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-8 text-center">
+            Why FraCTO, not the usual suspects
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="py-3 px-4 text-left text-[var(--color-muted-foreground)] font-medium"></th>
+                  <th className="py-3 px-4 text-left text-[var(--color-plum)] font-semibold">FraCTO</th>
+                  <th className="py-3 px-4 text-left text-[var(--color-muted-foreground)] font-medium">MBB / Big 4</th>
+                  <th className="py-3 px-4 text-left text-[var(--color-muted-foreground)] font-medium">Big IT</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/50">
+                {[
+                  ["Diagnostic cost", "$15-25K", "$500K-2M", "Free (then lock-in)"],
+                  ["Who does the work", "Senior embedded orchestrator", "Junior analysts", "Offshore teams"],
+                  ["Stays to execute", "Yes — ongoing retainer", "No — delivers deck, leaves", "Sort of — bills forever"],
+                  ["Vendor bias", "Independent", "Often sponsored", "Sells own stack"],
+                  ["AI augmented", "Yes — AI-powered toolkit", "Manual", "Tooling varies"],
+                ].map(([label, fracto, mbb, bigit]) => (
+                  <tr key={label}>
+                    <td className="py-3 px-4 font-medium text-[var(--color-plum)]">{label}</td>
+                    <td className="py-3 px-4 text-[var(--color-plum)] font-medium">{fracto}</td>
+                    <td className="py-3 px-4 text-[var(--color-muted-foreground)]">{mbb}</td>
+                    <td className="py-3 px-4 text-[var(--color-muted-foreground)]">{bigit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-8 text-center">
+            Services
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Diagnostic",
+                price: "$15-25K",
+                duration: "2-3 weeks",
+                items: ["Expert interviews", "Architecture review", "CMDB analysis", "3-horizon roadmap", "Board-ready deck"],
+              },
+              {
+                title: "Fractional CTO",
+                price: "$10-25K/mo",
+                duration: "Ongoing",
+                items: ["Embedded senior technologist", "Execution oversight", "Vendor evaluation", "Stakeholder navigation", "Quick wins from Week 1"],
+              },
+              {
+                title: "AI Projects",
+                price: "$30-75K+",
+                duration: "4-8 weeks",
+                items: ["AI skills deployment", "Automation program setup", "Custom AI solutions", "End-to-end delivery", "Knowledge transfer"],
+              },
+            ].map((service) => (
+              <Card key={service.title} className="border-border/50 hover:border-[var(--color-periwinkle)] transition-colors">
+                <CardContent className="pt-6">
+                  <h3 className="font-bold text-[var(--color-plum)] text-lg mb-1">{service.title}</h3>
+                  <div className="text-2xl font-bold text-[var(--color-periwinkle)] mb-1">{service.price}</div>
+                  <div className="text-xs text-[var(--color-muted-foreground)] mb-4">{service.duration}</div>
+                  <ul className="space-y-2">
+                    {service.items.map((item) => (
+                      <li key={item} className="text-sm text-[var(--color-muted-foreground)] flex items-start gap-2">
+                        <span className="text-[var(--color-periwinkle)] mt-0.5">&#10003;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Express Interest Form */}
+      <section id="express-interest" className="py-16 px-6 bg-[var(--color-muted)]">
+        <div className="max-w-xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-3 text-center">
+            Express Interest
+          </h2>
+          <p className="text-[var(--color-muted-foreground)] text-center mb-8">
+            Tell us about your organization and we&apos;ll reach out to discuss how we can help.
+          </p>
+          <Card className="border-border/50">
+            <CardContent className="pt-6">
+              <ExpressInterestForm />
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <SiteFooter />
     </div>
   );
 }
