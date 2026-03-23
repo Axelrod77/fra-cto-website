@@ -7,7 +7,7 @@ Public marketing site for FraCTO at **fra-cto.com**. Separate from the assessmen
 - Next.js 16 static export (`output: "export"`)
 - Tailwind v4, shadcn/ui components, Inter font
 - **Midnight Executive** design system: Navy (#0D1B2A) + Teal (#0097A7) — matches LSEG pitch decks
-- No backend — pure static HTML
+- **Backend:** Cloudflare D1 (SQLite on edge) + Pages Functions for Team Quick Scan API
 
 ## Repository & Deployment
 - **Code:** `website/` directory in fraCTO project
@@ -20,10 +20,11 @@ Public marketing site for FraCTO at **fra-cto.com**. Separate from the assessmen
 - **Custom domain:** www.fra-cto.com added
 - **Live URLs:** fra-cto.com, fra-cto-website.pages.dev
 
-## Pages (3)
+## Pages (4)
 1. **Home** (`/`) — hero ("It looks like AI. It works because of the human inside."), problem statement, how-it-works (3 steps), founders section (roles + credentials, no names), comparison table (FraCTO vs MBB vs Big IT), services cards (no pricing), inline express interest form
-2. **Quick Scan** (`/quick-scan`) — 14 MCQ questions across 12 dimensions, instant scoring with maturity badges and dimension breakdown bars, CTA to express interest after results
-3. **Express Interest** (`/express-interest`) — standalone form page
+2. **Quick Scan** (`/quick-scan`) — mode selection (Solo vs Team), 14 MCQ questions across 12 dimensions, instant scoring with maturity badges and dimension breakdown bars, CTA to express interest after results. Score + maturity level passed to Express Interest via query params.
+3. **Team Dashboard** (`/quick-scan/team?code=X7K2P9`) — composite score from all respondents, per-dimension variance with spread indicator (warning on spread > 1.0), individual responses table, Express Interest CTA with composite data
+4. **Express Interest** (`/express-interest`) — standalone form page. Shows score banner when arriving from Quick Scan (solo or team). Team composite context (response count, team code) included in Web3Forms email.
 
 ## Key Files
 ```
@@ -35,7 +36,8 @@ website/
 │   ├── layout.tsx              # Inter font, SEO metadata, og tags
 │   ├── icon.svg                # Favicon (auto-served by Next.js App Router)
 │   ├── page.tsx                # Landing page (all sections)
-│   ├── quick-scan/page.tsx     # Embedded quick scan with scoring
+│   ├── quick-scan/page.tsx     # Solo/Team mode selection + questionnaire
+│   ├── quick-scan/team/page.tsx # Team dashboard (composite + variance)
 │   └── express-interest/page.tsx
 ├── src/components/
 │   ├── site-header.tsx         # Sticky header with logo, nav (Quick Scan + Express Interest)
@@ -44,9 +46,18 @@ website/
 │   └── ui/                     # shadcn: button, card, input, label, radio-group, textarea
 ├── src/data/
 │   └── questionnaire.ts        # 14 quick scan modules + maturity levels (copied from portal)
-└── src/lib/
-    ├── scoring.ts              # computeScores() — MCQ lookup, dimension avg, overall avg
-    └── utils.ts                # cn() helper
+├── src/lib/
+│   ├── scoring.ts              # computeScores() — MCQ lookup, dimension avg, overall avg
+│   ├── api.ts                  # Typed fetch client for Team Scan API (4 endpoints)
+│   └── utils.ts                # cn() helper
+├── functions/api/              # Cloudflare Pages Functions (D1 backend)
+│   ├── _helpers.ts             # Shared types, validation, invite code generation
+│   ├── sessions.ts             # POST: create team session
+│   ├── sessions/[code].ts      # GET: session + responses + composite
+│   ├── sessions/[code]/join.ts # POST: validate invite code
+│   └── sessions/[code]/respond.ts # POST: submit team member answers
+├── schema.sql                  # D1 migration (team_sessions + team_responses)
+└── wrangler.toml               # D1 binding config
 ```
 
 ## Express Interest Form
@@ -63,7 +74,21 @@ website/
 - Scoring: MCQ option score (1-5) → average per dimension → overall average
 - 5 maturity bands: Foundational (red), Emerging (orange), Developing (yellow), Advanced (teal), Leading (navy)
 - Progress bar at top during questions
-- Self-contained — no Supabase dependency
+- **Solo mode:** client-side only, instant results, no backend
+- **Team mode:** Cloudflare D1 backend, invite code system (6-char alphanumeric, excludes I/O/0/1)
+  - Create session → get invite code → share with team → each fills independently → composite dashboard
+  - Composite = average of all respondents' dimension scores
+  - Spread = max - min per dimension (warning icon on spread > 1.0 = team disagrees)
+  - Individual responses table with name, role, overall score, time submitted
+  - "Copy Results" button on solo results page
+
+## Team Scan D1 Setup (one-time)
+```
+npx wrangler d1 create fracto-team-scans
+# paste database_id into wrangler.toml
+npx wrangler d1 execute fracto-team-scans --remote --file=schema.sql
+```
+Then in Cloudflare Dashboard → Pages → Settings → Functions → D1 bindings: variable `DB` → database `fracto-team-scans`
 
 ## Design System — Midnight Executive (March 2026 Rebrand)
 Previously used Plum (#3D1F3E) + Periwinkle (#8B8FCF) — warm, purple-leaning. Rebranded to match LSEG pitch deck palette for brand consistency across all client-facing collaterals.
@@ -90,9 +115,9 @@ Key visual changes:
 - **Outline buttons on dark sections** need explicit `bg-transparent` — shadcn's `outline` variant applies `bg-background` (white) which makes white text invisible on navy backgrounds
 
 ## Security Posture
-- **Rate limiting:** N/A — pure static site, no server endpoints. Cloudflare CDN provides DDoS protection. Web3Forms rate-limits on their end (250/mo free tier).
-- **Input validation:** HTML `required` + `type="email"` + `maxLength` on all form fields. React JSX auto-escapes output (no XSS surface). No `dangerouslySetInnerHTML` anywhere.
-- **API keys:** Only `NEXT_PUBLIC_WEB3FORMS_KEY` — intentionally public. No hardcoded secrets in source. OWASP compliant.
+- **Rate limiting:** Cloudflare CDN provides DDoS protection. Web3Forms rate-limits on their end (250/mo free tier). D1 endpoints have no explicit rate limiting (low traffic expected).
+- **Input validation:** HTML `required` + `type="email"` + `maxLength` on all form fields. Server-side `validateString()` on all Pages Function inputs. React JSX auto-escapes output (no XSS surface). No `dangerouslySetInnerHTML` anywhere.
+- **API keys:** Only `NEXT_PUBLIC_WEB3FORMS_KEY` — intentionally public. D1 binding is server-side only (not exposed to client). No hardcoded secrets in source. OWASP compliant.
 
 ## Design Decisions
 - No pricing shown on website (removed per founder request)
