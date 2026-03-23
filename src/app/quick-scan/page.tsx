@@ -1,19 +1,55 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { quickScanModules, maturityLevels } from "@/data/questionnaire";
 import { computeScores, type ScoreResult } from "@/lib/scoring";
+import { createSession, joinSession, submitResponse } from "@/lib/api";
+
+type Mode = "choose" | "solo" | "team-create" | "team-invite" | "team-join" | "team-questions";
+
+interface TeamContext {
+  code: string;
+  orgName: string;
+  respondentName: string;
+  respondentRole: string;
+}
 
 function QuickScanInner() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const teamParam = searchParams.get("team");
+
+  const [mode, setMode] = useState<Mode>(teamParam ? "team-join" : "choose");
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [results, setResults] = useState<ScoreResult | null>(null);
+  const [teamCtx, setTeamCtx] = useState<TeamContext>({
+    code: teamParam || "",
+    orgName: "",
+    respondentName: "",
+    respondentRole: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Team create form
+  const [createOrg, setCreateOrg] = useState("");
+  const [createName, setCreateName] = useState("");
+  const [createRole, setCreateRole] = useState("");
+
+  // Team join form
+  const [joinCode, setJoinCode] = useState(teamParam || "");
+  const [joinName, setJoinName] = useState("");
+  const [joinRole, setJoinRole] = useState("");
+  const [joinOrgName, setJoinOrgName] = useState("");
 
   const questions = quickScanModules.flatMap((mod) =>
     mod.sections.flatMap((sec) => sec.questions)
@@ -23,16 +59,16 @@ function QuickScanInner() {
   const totalCount = questions.length;
   const allAnswered = answeredCount === totalCount;
 
+  // Auto-validate team code from URL
+  useEffect(() => {
+    if (teamParam && mode === "team-join") {
+      // Pre-fill the code but let user enter their name/role
+      setJoinCode(teamParam);
+    }
+  }, [teamParam, mode]);
+
   function handleAnswer(questionId: string, value: string) {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
-  }
-
-  function handleGetScore() {
-    const scoreResult = computeScores(answers, quickScanModules);
-    setResults(scoreResult);
-    setTimeout(() => {
-      document.getElementById("quick-scan-results")?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
   }
 
   function getMaturityLevel(score: number) {
@@ -46,6 +82,60 @@ function QuickScanInner() {
     if (score >= 1.9) return "bg-orange-500";
     return "bg-red-500";
   }
+
+  async function handleCreateTeam() {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await createSession(createOrg, createName, createRole);
+      setTeamCtx({ code: res.invite_code, orgName: createOrg, respondentName: createName, respondentRole: createRole });
+      setMode("team-invite");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to create team scan");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleJoinTeam() {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await joinSession(joinCode, joinName, joinRole);
+      setJoinOrgName(res.org_name);
+      setTeamCtx({ code: joinCode.toUpperCase(), orgName: res.org_name, respondentName: joinName, respondentRole: joinRole });
+      setMode("team-questions");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Invalid invite code");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleGetScore() {
+    const scoreResult = computeScores(answers, quickScanModules);
+    setResults(scoreResult);
+    setTimeout(() => {
+      document.getElementById("quick-scan-results")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }
+
+  async function handleTeamSubmit() {
+    const scoreResult = computeScores(answers, quickScanModules);
+    setLoading(true);
+    setError("");
+    try {
+      await submitResponse(teamCtx.code, teamCtx.respondentName, teamCtx.respondentRole, answers, scoreResult);
+      router.push(`/quick-scan/team?code=${teamCtx.code}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to submit response");
+      setLoading(false);
+    }
+  }
+
+  const isTeamMode = mode === "team-questions" || (mode === "team-invite" && false);
+  const showQuestions = mode === "solo" || mode === "team-questions";
+  const showResults = mode === "solo" && results;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -67,9 +157,227 @@ function QuickScanInner() {
         </div>
       </section>
 
+      {/* Mode Selection */}
+      {mode === "choose" && (
+        <section className="px-6 pb-12">
+          <div className="max-w-3xl mx-auto grid sm:grid-cols-2 gap-6">
+            <Card
+              className="border-border/50 hover:border-[var(--color-periwinkle)] transition-colors cursor-pointer"
+              onClick={() => setMode("solo")}
+            >
+              <CardContent className="pt-8 pb-8 text-center">
+                <div className="w-14 h-14 rounded-full bg-[var(--color-periwinkle-lighter)] flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-[var(--color-plum)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-[var(--color-plum)] text-lg mb-2">Solo Scan</h3>
+                <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-6">
+                  Answer {totalCount} questions yourself and get your score instantly.
+                </p>
+                <Button className="bg-[var(--color-plum)] hover:bg-[var(--color-plum-light)] text-white px-8">
+                  Start
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/50 hover:border-[var(--color-periwinkle)] transition-colors">
+              <CardContent className="pt-8 pb-8 text-center">
+                <div className="w-14 h-14 rounded-full bg-[var(--color-periwinkle-lighter)] flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-[var(--color-plum)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-[var(--color-plum)] text-lg mb-2">Team Scan</h3>
+                <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-6">
+                  Invite your team. Everyone fills it independently. See where you agree — and where you don&apos;t.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <Button
+                    className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-6"
+                    onClick={() => setMode("team-create")}
+                  >
+                    Start New
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-[var(--color-periwinkle)] text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)] px-6"
+                    onClick={() => setMode("team-join")}
+                  >
+                    Join Team
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
+      {/* Team Create Form */}
+      {mode === "team-create" && (
+        <section className="px-6 pb-12">
+          <div className="max-w-md mx-auto">
+            <Card className="border-border/50">
+              <CardContent className="pt-6">
+                <h2 className="text-lg font-bold text-[var(--color-plum)] mb-4">Start a Team Scan</h2>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-[var(--color-plum)]">Organization *</Label>
+                    <Input value={createOrg} onChange={(e) => setCreateOrg(e.target.value)} placeholder="e.g. LSEG India" maxLength={200} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[var(--color-plum)]">Your Name *</Label>
+                    <Input value={createName} onChange={(e) => setCreateName(e.target.value)} placeholder="Your name" maxLength={100} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[var(--color-plum)]">Your Role *</Label>
+                    <Input value={createRole} onChange={(e) => setCreateRole(e.target.value)} placeholder="e.g. CTO, VP Engineering" maxLength={100} />
+                  </div>
+                  {error && <p className="text-sm text-red-600">{error}</p>}
+                  <div className="flex gap-3">
+                    <Button variant="ghost" onClick={() => { setMode("choose"); setError(""); }} className="text-[var(--color-muted-foreground)]">
+                      Back
+                    </Button>
+                    <Button
+                      className="flex-1 bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white"
+                      disabled={!createOrg.trim() || !createName.trim() || !createRole.trim() || loading}
+                      onClick={handleCreateTeam}
+                    >
+                      {loading ? "Creating..." : "Create Team Scan"}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
+      {/* Team Invite Screen */}
+      {mode === "team-invite" && (
+        <section className="px-6 pb-12">
+          <div className="max-w-md mx-auto">
+            <Card className="border-[var(--color-periwinkle)]">
+              <CardContent className="pt-8 pb-8 text-center">
+                <div className="w-14 h-14 rounded-full bg-[var(--color-periwinkle-lighter)] flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-[var(--color-teal)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-[var(--color-plum)] mb-2">Your Team Scan is ready!</h2>
+                <p className="text-sm text-[var(--color-muted-foreground)] mb-6">Share this code with your team:</p>
+
+                <div className="bg-[var(--color-muted)] rounded-xl p-6 mb-4">
+                  <div className="text-3xl font-mono font-bold text-[var(--color-plum)] tracking-[0.3em] mb-3">
+                    {teamCtx.code}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    className="text-[var(--color-periwinkle)] hover:bg-[var(--color-periwinkle-lighter)] text-sm"
+                    onClick={() => navigator.clipboard.writeText(teamCtx.code)}
+                  >
+                    Copy Code
+                  </Button>
+                </div>
+
+                <div className="bg-[var(--color-muted)] rounded-xl p-4 mb-6">
+                  <p className="text-xs text-[var(--color-muted-foreground)] mb-2">Or share the link:</p>
+                  <div className="flex items-center gap-2 justify-center">
+                    <code className="text-xs text-[var(--color-plum)] bg-white px-3 py-1.5 rounded border border-border/50">
+                      fra-cto.com/quick-scan?team={teamCtx.code}
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-[var(--color-periwinkle)] hover:bg-[var(--color-periwinkle-lighter)] text-xs h-8"
+                      onClick={() => navigator.clipboard.writeText(`https://fra-cto.com/quick-scan?team=${teamCtx.code}`)}
+                    >
+                      Copy
+                    </Button>
+                  </div>
+                </div>
+
+                <p className="text-xs text-[var(--color-muted-foreground)] mb-6">
+                  Team members can join anytime. You&apos;ll see their results on the dashboard.
+                </p>
+
+                <Button
+                  size="lg"
+                  className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-8"
+                  onClick={() => setMode("team-questions")}
+                >
+                  Start My Quick Scan
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
+      {/* Team Join Form */}
+      {mode === "team-join" && (
+        <section className="px-6 pb-12">
+          <div className="max-w-md mx-auto">
+            <Card className="border-border/50">
+              <CardContent className="pt-6">
+                <h2 className="text-lg font-bold text-[var(--color-plum)] mb-4">Join a Team Scan</h2>
+                {joinOrgName && (
+                  <div className="bg-[var(--color-periwinkle-lighter)] rounded-lg p-3 mb-4 text-sm text-[var(--color-plum)]">
+                    Joining: <strong>{joinOrgName}</strong>
+                  </div>
+                )}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-[var(--color-plum)]">Invite Code *</Label>
+                    <Input
+                      value={joinCode}
+                      onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                      placeholder="e.g. X7K2P9"
+                      maxLength={6}
+                      className="text-center text-lg font-mono tracking-[0.2em]"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[var(--color-plum)]">Your Name *</Label>
+                    <Input value={joinName} onChange={(e) => setJoinName(e.target.value)} placeholder="Your name" maxLength={100} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[var(--color-plum)]">Your Role *</Label>
+                    <Input value={joinRole} onChange={(e) => setJoinRole(e.target.value)} placeholder="e.g. VP Engineering" maxLength={100} />
+                  </div>
+                  {error && <p className="text-sm text-red-600">{error}</p>}
+                  <div className="flex gap-3">
+                    {!teamParam && (
+                      <Button variant="ghost" onClick={() => { setMode("choose"); setError(""); }} className="text-[var(--color-muted-foreground)]">
+                        Back
+                      </Button>
+                    )}
+                    <Button
+                      className="flex-1 bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white"
+                      disabled={joinCode.trim().length < 6 || !joinName.trim() || !joinRole.trim() || loading}
+                      onClick={handleJoinTeam}
+                    >
+                      {loading ? "Joining..." : "Join & Start"}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
       {/* Progress */}
-      {!results && (
+      {showQuestions && !results && (
         <div className="max-w-3xl mx-auto px-6 mb-6">
+          {mode === "team-questions" && (
+            <div className="bg-[var(--color-periwinkle-lighter)] rounded-lg p-3 mb-4 flex items-center justify-between">
+              <span className="text-sm text-[var(--color-plum)]">
+                Team Scan: <strong>{teamCtx.orgName}</strong>
+              </span>
+              <span className="text-xs font-mono text-[var(--color-periwinkle)]">{teamCtx.code}</span>
+            </div>
+          )}
           <div className="flex items-center justify-between text-sm text-[var(--color-muted-foreground)] mb-2">
             <span>{answeredCount} of {totalCount} answered</span>
             <span>{Math.round((answeredCount / totalCount) * 100)}%</span>
@@ -84,7 +392,7 @@ function QuickScanInner() {
       )}
 
       {/* Questions */}
-      {!results && (
+      {showQuestions && !results && (
         <section className="px-6 pb-12">
           <div className="max-w-3xl mx-auto space-y-6">
             {questions.map((question, idx) => {
@@ -146,23 +454,41 @@ function QuickScanInner() {
             })}
 
             <div className="pt-4 text-center">
-              <Button
-                size="lg"
-                onClick={handleGetScore}
-                disabled={!allAnswered}
-                className="bg-[var(--color-plum)] hover:bg-[var(--color-plum-light)] text-white px-12 py-6 text-base disabled:opacity-40"
-              >
-                {allAnswered
-                  ? "Get Your Score"
-                  : `Answer all ${totalCount} questions to continue (${totalCount - answeredCount} remaining)`}
-              </Button>
+              {mode === "solo" ? (
+                <Button
+                  size="lg"
+                  onClick={handleGetScore}
+                  disabled={!allAnswered}
+                  className="bg-[var(--color-plum)] hover:bg-[var(--color-plum-light)] text-white px-12 py-6 text-base disabled:opacity-40"
+                >
+                  {allAnswered
+                    ? "Get Your Score"
+                    : `Answer all ${totalCount} questions to continue (${totalCount - answeredCount} remaining)`}
+                </Button>
+              ) : (
+                <>
+                  {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
+                  <Button
+                    size="lg"
+                    onClick={handleTeamSubmit}
+                    disabled={!allAnswered || loading}
+                    className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-12 py-6 text-base disabled:opacity-40"
+                  >
+                    {loading
+                      ? "Submitting..."
+                      : allAnswered
+                        ? "Submit & View Team Results"
+                        : `Answer all ${totalCount} questions to continue (${totalCount - answeredCount} remaining)`}
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </section>
       )}
 
-      {/* Results */}
-      {results && (
+      {/* Solo Results */}
+      {showResults && results && (
         <section id="quick-scan-results" className="px-6 pb-20">
           <div className="max-w-3xl mx-auto">
             <Card className="border-[var(--color-plum)] mb-8">

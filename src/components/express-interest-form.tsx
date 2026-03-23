@@ -14,9 +14,12 @@ export function ExpressInterestForm() {
   const score = searchParams.get("score");
   const level = searchParams.get("level");
   const dims = searchParams.get("dims");
+  const teamCode = searchParams.get("team");
+  const responseCount = searchParams.get("responses");
 
+  const isTeam = !!teamCode;
   const scoreSummary = score && level
-    ? `Quick Scan Score: ${score}/5.0 (${level})${dims ? `\n\nDimension Scores:\n${dims.split(',').map(d => {const [name, val] = d.split(':'); return `  ${name}: ${val}/5.0`;}).join('\n')}` : ''}`
+    ? `${isTeam ? "Team Composite" : "Quick Scan"} Score: ${score}/5.0 (${level})${isTeam && responseCount ? ` — ${responseCount} respondents` : ""}${dims ? `\n\nDimension Scores:\n${dims.split(',').map(d => {const [name, val] = d.split(':'); return `  ${name}: ${val}/5.0`;}).join('\n')}` : ''}`
     : "";
 
   const [submitted, setSubmitted] = useState(false);
@@ -32,9 +35,12 @@ export function ExpressInterestForm() {
     const data = new FormData(form);
     data.append("access_key", WEB3FORMS_KEY);
     data.append("subject", score
-      ? `FraCTO Express Interest — Score ${score}/5.0 (${level})`
+      ? `FraCTO Express Interest — ${isTeam ? "Team " : ""}Score ${score}/5.0 (${level})${isTeam ? ` [${responseCount} respondents]` : ""}`
       : "New FraCTO Express Interest"
     );
+    if (teamCode) {
+      data.append("Team Code", teamCode);
+    }
     if (scoreSummary) {
       data.append("Quick Scan Results", scoreSummary);
     }
@@ -78,7 +84,9 @@ export function ExpressInterestForm() {
       {scoreSummary && (
         <div className="rounded-lg bg-[var(--color-muted)] border border-border/50 p-4 mb-2">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-medium text-[var(--color-periwinkle)] uppercase tracking-wide">Your Quick Scan Results</span>
+            <span className="text-xs font-medium text-[var(--color-periwinkle)] uppercase tracking-wide">
+              {isTeam ? `Team Composite — ${responseCount} respondent${responseCount === "1" ? "" : "s"}` : "Your Quick Scan Results"}
+            </span>
           </div>
           <div className="text-2xl font-bold text-[var(--color-plum)]">
             {score}/5.0 <span className="text-sm font-medium text-[var(--color-periwinkle)]">{level}</span>

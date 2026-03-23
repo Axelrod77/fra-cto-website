@@ -1,0 +1,7 @@
+name = "fra-cto-website"
+compatibility_date = "2024-12-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "fracto-team-scans"
+database_id = "placeholder-run-wrangler-d1-create"
