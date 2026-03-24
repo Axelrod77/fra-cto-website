@@ -165,38 +165,54 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Differentiator */}
-      <section className="py-16 px-6 bg-[var(--color-muted)]">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-8 text-center">
-            Why FraCTO, not the usual suspects
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="py-3 px-4 text-left text-[var(--color-muted-foreground)] font-medium"></th>
-                  <th className="py-3 px-4 text-left text-[var(--color-plum)] font-semibold">FraCTO</th>
-                  <th className="py-3 px-4 text-left text-[var(--color-muted-foreground)] font-medium">MBB / Big 4</th>
-                  <th className="py-3 px-4 text-left text-[var(--color-muted-foreground)] font-medium">Big IT</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/50">
-                {[
-                  ["Who does the work", "Senior embedded orchestrator", "Junior analysts", "Offshore teams"],
-                  ["Stays to execute", "Yes — ongoing retainer", "No — delivers deck, leaves", "Sort of — bills forever"],
-                  ["Vendor bias", "Independent", "Often sponsored", "Sells own stack"],
-                  ["AI augmented", "Yes — AI-powered toolkit", "Manual", "Tooling varies"],
-                ].map(([label, fracto, mbb, bigit]) => (
-                  <tr key={label}>
-                    <td className="py-3 px-4 font-medium text-[var(--color-plum)]">{label}</td>
-                    <td className="py-3 px-4 text-[var(--color-plum)] font-medium">{fracto}</td>
-                    <td className="py-3 px-4 text-[var(--color-muted-foreground)]">{mbb}</td>
-                    <td className="py-3 px-4 text-[var(--color-muted-foreground)]">{bigit}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* The Human Inside — Mechanical Turk storytelling */}
+      <section className="py-20 px-6 bg-[var(--color-muted)]">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Video */}
+            <div className="relative rounded-xl overflow-hidden shadow-xl border border-border/50">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto"
+                poster="/turk-poster.jpg"
+              >
+                <source src="/turk.mp4" type="video/mp4" />
+              </video>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+                <p className="text-xs text-white/70 italic">The Mechanical Turk, 1770</p>
+              </div>
+            </div>
+
+            {/* Copy */}
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-6 leading-tight">
+                In 1770, a machine stunned the world by beating grandmasters at chess.
+              </h2>
+              <div className="space-y-4 text-[var(--color-muted-foreground)] leading-relaxed">
+                <p>
+                  For decades, emperors and scientists marveled at the automaton&apos;s intelligence.
+                  Napoleon played it. Benjamin Franklin studied it. No one could explain how a machine
+                  could think so brilliantly.
+                </p>
+                <p>
+                  The secret? A grandmaster hidden inside the cabinet, guiding every move through
+                  an ingenious system of levers and magnets.
+                </p>
+                <p className="text-[var(--color-plum)] font-semibold text-lg">
+                  250 years later, the same truth holds.
+                </p>
+                <p>
+                  AI tools are everywhere. But without a senior technologist inside — someone who
+                  knows your architecture, your politics, your constraints — they&apos;re just theater.
+                </p>
+                <p className="text-[var(--color-plum)] font-semibold border-l-[3px] border-l-[var(--color-teal)] pl-4">
+                  FraCTO is the human inside the machine.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
