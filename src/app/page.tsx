@@ -177,7 +177,7 @@ export default function HomePage() {
                 muted
                 playsInline
                 className="w-full h-auto"
-                poster="/turk-poster.jpg"
+                preload="auto"
               >
                 <source src="/turk.mp4" type="video/mp4" />
               </video>

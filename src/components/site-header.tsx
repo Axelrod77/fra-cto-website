@@ -21,7 +21,7 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-4">
           <Link href="/quick-scan">
-            <Button variant="ghost" className="text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)]">
+            <Button variant="outline" className="border-[var(--color-teal)]/30 text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] bg-transparent">
               Quick Scan
             </Button>
           </Link>
@@ -52,7 +52,7 @@ export function SiteHeader() {
       {menuOpen && (
         <div className="sm:hidden border-t border-border/50 bg-white px-6 py-4 flex flex-col gap-3">
           <Link href="/quick-scan" onClick={() => setMenuOpen(false)}>
-            <Button variant="ghost" className="w-full justify-start text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)]">
+            <Button variant="outline" className="w-full justify-start border-[var(--color-teal)]/30 text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] bg-transparent">
               Quick Scan
             </Button>
           </Link>
