@@ -20,10 +20,8 @@ export function SiteHeader() {
 
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-4">
-          <Link href="/quick-scan">
-            <button className="border border-[rgba(0,151,167,0.4)] text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors" style={{ background: 'transparent' }}>
+          <Link href="/quick-scan" className="inline-flex items-center justify-center border border-[rgba(0,151,167,0.4)] text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Quick Scan
-            </button>
           </Link>
           <Link href="/express-interest">
             <Button className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white">
@@ -51,10 +49,8 @@ export function SiteHeader() {
       {/* Mobile dropdown */}
       {menuOpen && (
         <div className="sm:hidden border-t border-border/50 bg-white px-6 py-4 flex flex-col gap-3">
-          <Link href="/quick-scan" onClick={() => setMenuOpen(false)}>
-            <button className="w-full text-left border border-[rgba(0,151,167,0.4)] text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors" style={{ background: 'transparent' }}>
+          <Link href="/quick-scan" onClick={() => setMenuOpen(false)} className="inline-flex items-center w-full border border-[rgba(0,151,167,0.4)] text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Quick Scan
-            </button>
           </Link>
           <Link href="/express-interest" onClick={() => setMenuOpen(false)}>
             <Button className="w-full bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white">
