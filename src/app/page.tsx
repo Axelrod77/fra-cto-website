@@ -11,57 +11,85 @@ export default function HomePage() {
     <div className="min-h-screen bg-background flex flex-col">
       <SiteHeader />
 
-      {/* Hero — dark navy for premium impact */}
+      {/* Hero — Split: Turk video + storytelling */}
       <section className="py-20 md:py-28 px-6 bg-[var(--color-navy)]">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-navy-mid)] text-[var(--color-teal)] text-sm font-medium mb-6 border border-[var(--color-teal)]/20">
-            Fractional CTO for Enterprise AI
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
-            It looks like AI.<br />
-            It works because of the<br />
-            <span className="text-[var(--color-teal)]">human inside.</span>
-          </h1>
-          <p className="text-lg text-[#78909C] max-w-2xl mx-auto mb-10 leading-relaxed">
-            Independent advisory for enterprises navigating AI transformation.
-            No vendor bias. No headcount incentives. Just honest strategy and embedded execution.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/quick-scan">
-              <Button size="lg" className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-8 h-12">
-                Take the Quick Scan
-              </Button>
-            </Link>
-            <Link href="/express-interest" className="inline-flex items-center justify-center border border-white/20 text-white hover:bg-white/10 px-8 h-12 rounded-lg text-base font-medium transition-colors">
-                Express Interest
-            </Link>
+        <div className="max-w-[1100px] mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Video */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto"
+                preload="auto"
+              >
+                <source src="/turk.mp4" type="video/mp4" />
+              </video>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+                <p className="text-xs text-white/70 italic">The Mechanical Turk, 1770</p>
+              </div>
+            </div>
+
+            {/* Copy */}
+            <div className="flex flex-col gap-5">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-navy-mid)] text-[var(--color-teal)] text-sm font-medium border border-[var(--color-teal)]/20 w-fit">
+                Fractional CTO for Enterprise AI
+              </div>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
+                In 1770, a machine stunned the world by beating grandmasters at chess.
+              </h1>
+              <p className="text-[#78909C] leading-relaxed">
+                Napoleon played it. Benjamin Franklin studied it. No one could explain how a machine
+                could think so brilliantly. The secret?{" "}
+                <strong className="text-[#B0BEC5]">A grandmaster hidden inside</strong>, guiding every move.
+              </p>
+              <p className="text-[#78909C] leading-relaxed">
+                250 years later, the same truth holds. AI tools are everywhere &mdash; but without
+                a senior technologist inside your org, they&apos;re just theater.
+              </p>
+              <p className="text-xl font-bold text-white border-l-[3px] border-l-[var(--color-teal)] pl-4">
+                FraCTO is the <span className="text-[var(--color-teal)]">human inside</span> the machine.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-2">
+                <Link href="/quick-scan">
+                  <Button size="lg" className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-8 h-12">
+                    Take the Quick Scan
+                  </Button>
+                </Link>
+                <Link href="/express-interest" className="inline-flex items-center justify-center border border-white/20 text-white hover:bg-white/10 px-8 h-12 rounded-lg text-base font-medium transition-colors">
+                    Express Interest
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* The Problem */}
+      {/* The Enterprise AI Challenge */}
       <section className="py-16 px-6 bg-[var(--color-muted)]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-4 text-center">
-            Why enterprises get stuck
+            The enterprise AI challenge
           </h2>
           <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-12">
-            Your Big IT partners have a conflict of interest. Automation cannibalizes their headcount model.
-            They&apos;ll slow-walk your transformation while billing for the delay.
+            Most enterprises have the ambition for AI &mdash; but the partners advising them have
+            competing incentives. Independent guidance changes the equation.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                title: "No honest assessment",
-                desc: "Legacy partners can't recommend eliminating roles they profit from.",
+                title: "Misaligned incentives",
+                desc: "Traditional partners advise on transformations that affect their own revenue. Independence removes that tension.",
               },
               {
-                title: "Strategy without execution",
-                desc: "Consultancies deliver decks, then disappear. Plans collect dust.",
+                title: "Strategy-execution gap",
+                desc: "Great strategies need embedded follow-through. Plans without execution ownership stall.",
               },
               {
-                title: "Internal silos",
-                desc: "CIOs freeze on failure stats. Teams resist change. Nobody owns the cross-cutting work.",
+                title: "Organizational complexity",
+                desc: "AI transformation cuts across teams, budgets, and reporting lines. Someone needs to own the horizontal.",
               },
             ].map((item) => (
               <Card key={item.title} className="border-border/50 border-l-[3px] border-l-[var(--color-teal)]">
@@ -159,58 +187,6 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* The Human Inside — Mechanical Turk storytelling */}
-      <section className="py-20 px-6 bg-[var(--color-muted)]">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Video */}
-            <div className="relative rounded-xl overflow-hidden shadow-xl border border-border/50">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto"
-                preload="auto"
-              >
-                <source src="/turk.mp4" type="video/mp4" />
-              </video>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
-                <p className="text-xs text-white/70 italic">The Mechanical Turk, 1770</p>
-              </div>
-            </div>
-
-            {/* Copy */}
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-6 leading-tight">
-                In 1770, a machine stunned the world by beating grandmasters at chess.
-              </h2>
-              <div className="space-y-4 text-[var(--color-muted-foreground)] leading-relaxed">
-                <p>
-                  For decades, emperors and scientists marveled at the automaton&apos;s intelligence.
-                  Napoleon played it. Benjamin Franklin studied it. No one could explain how a machine
-                  could think so brilliantly.
-                </p>
-                <p>
-                  The secret? A grandmaster hidden inside the cabinet, guiding every move through
-                  an ingenious system of levers and magnets.
-                </p>
-                <p className="text-[var(--color-plum)] font-semibold text-lg">
-                  250 years later, the same truth holds.
-                </p>
-                <p>
-                  AI tools are everywhere. But without a senior technologist inside — someone who
-                  knows your architecture, your politics, your constraints — they&apos;re just theater.
-                </p>
-                <p className="text-[var(--color-plum)] font-semibold border-l-[3px] border-l-[var(--color-teal)] pl-4">
-                  FraCTO is the human inside the machine.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>

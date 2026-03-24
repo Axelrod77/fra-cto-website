@@ -21,7 +21,7 @@ Public marketing site for FraCTO at **fra-cto.com**. Separate from the assessmen
 - **Live URLs:** fra-cto.com, fra-cto-website.pages.dev
 
 ## Pages (4)
-1. **Home** (`/`) — hero ("It looks like AI. It works because of the human inside."), problem statement, how-it-works (3 steps), founders section (roles + credentials, no names), comparison table (FraCTO vs MBB vs Big IT), services cards (no pricing), inline express interest form
+1. **Home** (`/`) — split hero (Turk video left + 1770 storytelling right, CTAs inline), "The enterprise AI challenge" section (neutral framing: misaligned incentives / strategy-execution gap / organizational complexity), how-it-works (3 steps), founders section (roles + credentials, no names), services cards (no pricing), inline express interest form
 2. **Quick Scan** (`/quick-scan`) — mode selection (Solo vs Team), 14 MCQ questions across 12 dimensions, instant scoring with maturity badges and dimension breakdown bars, CTA to express interest after results. Score + maturity level passed to Express Interest via query params.
 3. **Team Dashboard** (`/quick-scan/team?code=X7K2P9`) — composite score from all respondents, per-dimension variance with spread indicator (warning on spread > 1.0), individual responses table, Express Interest CTA with composite data
 4. **Express Interest** (`/express-interest`) — standalone form page. Shows score banner when arriving from Quick Scan (solo or team). Team composite context (response count, team code) included in Web3Forms email.
@@ -104,7 +104,7 @@ Previously used Plum (#3D1F3E) + Periwinkle (#8B8FCF) — warm, purple-leaning. 
 | Borders | #D4D5E8 (lavender) | #CFD8DC (slate) |
 
 Key visual changes:
-- **Dark navy hero** section (matches deck title slides)
+- **Split hero** section: Turk video left, 1770 storytelling right (dark navy bg, matches deck title slides)
 - **Dark navy footer** (matches deck footer bars)
 - **Teal CTA buttons** and accent badges
 - **Teal left-border** on problem cards (deck motif)
@@ -122,7 +122,8 @@ Key visual changes:
 ## Design Decisions
 - No pricing shown on website (removed per founder request)
 - No founder names — only roles (Senior IT Leader, Serial Entrepreneur, AI-Native Technologist) + credentials
-- Logo: `brand/logo-mark.svg` — teal/dark geometric triangle with gradient faces
+- Logo: `brand/logo-mark.svg`
+- **Copy tone:** neutral/positive — no "getting stuck", no finger-pointing. Problem section = "The enterprise AI challenge" (misaligned incentives, strategy-execution gap, organizational complexity) — teal/dark geometric triangle with gradient faces
 
 ## Cloudflare Pages Gotcha
 Do NOT select "Next.js" as the framework preset — it triggers OpenNext/Wrangler Workers deployment which fails with `output: "export"` (missing `pages-manifest.json`). Use preset "None" instead.
