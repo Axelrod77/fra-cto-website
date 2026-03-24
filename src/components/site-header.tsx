@@ -21,7 +21,7 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-4">
           <Link href="/quick-scan">
-            <Button variant="outline" className="border-[var(--color-teal)]/30 text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] bg-transparent">
+            <Button className="border border-[rgba(0,151,167,0.4)] bg-transparent text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Quick Scan
             </Button>
           </Link>
