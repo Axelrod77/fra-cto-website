@@ -21,9 +21,9 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-4">
           <Link href="/quick-scan">
-            <Button className="border border-[rgba(0,151,167,0.4)] bg-transparent text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            <button className="border border-[rgba(0,151,167,0.4)] text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors" style={{ background: 'transparent' }}>
               Quick Scan
-            </Button>
+            </button>
           </Link>
           <Link href="/express-interest">
             <Button className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white">
@@ -52,9 +52,9 @@ export function SiteHeader() {
       {menuOpen && (
         <div className="sm:hidden border-t border-border/50 bg-white px-6 py-4 flex flex-col gap-3">
           <Link href="/quick-scan" onClick={() => setMenuOpen(false)}>
-            <Button variant="outline" className="w-full justify-start border-[var(--color-teal)]/30 text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] bg-transparent">
+            <button className="w-full text-left border border-[rgba(0,151,167,0.4)] text-[var(--color-plum)] hover:bg-[var(--color-teal-light)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors" style={{ background: 'transparent' }}>
               Quick Scan
-            </Button>
+            </button>
           </Link>
           <Link href="/express-interest" onClick={() => setMenuOpen(false)}>
             <Button className="w-full bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white">

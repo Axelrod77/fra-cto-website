@@ -33,9 +33,9 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/express-interest">
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent px-8 h-12">
+              <button className="border border-white/20 text-white hover:bg-white/10 px-8 h-12 rounded-lg text-base font-medium transition-colors" style={{ background: 'transparent' }}>
                 Express Interest
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
