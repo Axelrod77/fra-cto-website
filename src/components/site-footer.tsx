@@ -4,7 +4,7 @@ import Image from "next/image";
 export function SiteFooter() {
   return (
     <footer className="py-8 px-6 mt-auto bg-[var(--color-navy)]">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#78909C]">
+      <div className="max-w-6xl mx-auto flex flex-col items-center gap-4 text-sm text-[#78909C]">
         <div className="flex items-center gap-2">
           <Image src="/logo.svg" alt="FraCTO" width={20} height={20} className="w-5 h-5" />
           <span className="font-medium text-white">FraCTO</span>

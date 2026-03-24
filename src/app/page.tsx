@@ -49,64 +49,58 @@ export default function HomePage() {
                 250 years later, the same truth holds. AI tools are everywhere &mdash; but without
                 a senior technologist inside your org, they&apos;re just theater.
               </p>
-              <p className="text-xl font-bold text-white border-l-[3px] border-l-[var(--color-teal)] pl-4">
-                FraCTO is the <span className="text-[var(--color-teal)]">human inside</span> the machine.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-2">
-                <Link href="/quick-scan">
-                  <Button size="lg" className="bg-[var(--color-teal)] hover:bg-[var(--color-teal-dark)] text-white px-8 h-12">
-                    Take the Quick Scan
-                  </Button>
-                </Link>
-                <Link href="/express-interest" className="inline-flex items-center justify-center border border-white/20 text-white hover:bg-white/10 px-8 h-12 rounded-lg text-base font-medium transition-colors">
-                    Express Interest
-                </Link>
-              </div>
             </div>
           </div>
+          <p className="text-xl md:text-2xl font-bold text-white text-center mt-12">
+            FraCTO is the <span className="text-[var(--color-teal)]">human inside</span> the machine.
+          </p>
         </div>
       </section>
 
       {/* The Enterprise AI Challenge */}
-      <section className="py-16 px-6 bg-[var(--color-muted)]">
+      <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-3 text-center">
             The enterprise AI challenge
           </h2>
-          <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-12">
+          <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-14">
             Most enterprises have the ambition for AI &mdash; but the partners advising them have
             competing incentives. Independent guidance changes the equation.
           </p>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="space-y-6 max-w-2xl mx-auto">
             {[
               {
+                num: "01",
                 title: "Misaligned incentives",
                 desc: "Traditional partners advise on transformations that affect their own revenue. Independence removes that tension.",
               },
               {
+                num: "02",
                 title: "Strategy-execution gap",
                 desc: "Great strategies need embedded follow-through. Plans without execution ownership stall.",
               },
               {
+                num: "03",
                 title: "Organizational complexity",
                 desc: "AI transformation cuts across teams, budgets, and reporting lines. Someone needs to own the horizontal.",
               },
             ].map((item) => (
-              <Card key={item.title} className="border-border/50 border-l-[3px] border-l-[var(--color-teal)]">
-                <CardContent className="pt-6">
-                  <h3 className="font-semibold text-[var(--color-plum)] mb-2">{item.title}</h3>
+              <div key={item.num} className="flex gap-5 items-start">
+                <span className="text-3xl font-bold text-[var(--color-teal)]/30 leading-none mt-0.5 shrink-0">{item.num}</span>
+                <div>
+                  <h3 className="font-semibold text-[var(--color-plum)] mb-1">{item.title}</h3>
                   <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">{item.desc}</p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="py-16 px-6">
+      <section className="py-20 px-6 bg-[var(--color-navy)]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-14 text-center">
             How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -134,14 +128,14 @@ export default function HomePage() {
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-[var(--color-teal)] text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-full border-2 border-[var(--color-teal)] text-[var(--color-teal)] font-bold text-xl flex items-center justify-center mx-auto mb-5">
                   {item.step}
                 </div>
-                <h3 className="font-semibold text-[var(--color-plum)] mb-2 text-lg">{item.title}</h3>
-                <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-4">{item.desc}</p>
+                <h3 className="font-semibold text-white mb-2 text-lg">{item.title}</h3>
+                <p className="text-sm text-[#78909C] leading-relaxed mb-4">{item.desc}</p>
                 {item.cta && item.href && (
                   <Link href={item.href}>
-                    <Button variant="ghost" className="text-[var(--color-periwinkle)] hover:text-[var(--color-plum)] hover:bg-[var(--color-periwinkle-lighter)]">
+                    <Button variant="ghost" className="text-[var(--color-teal)] hover:text-white hover:bg-[var(--color-teal)]/20">
                       {item.cta} &rarr;
                     </Button>
                   </Link>
@@ -153,15 +147,15 @@ export default function HomePage() {
       </section>
 
       {/* Founders */}
-      <section className="py-16 px-6">
+      <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-3 text-center">
             Who&apos;s behind FraCTO
           </h2>
-          <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-12">
+          <p className="text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto mb-14">
             Three founders with complementary expertise — enterprise IT, business building, and AI engineering.
           </p>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 role: "Senior IT Leader",
@@ -179,22 +173,23 @@ export default function HomePage() {
                 credential: "MBA, IIM & B.E. IIT Delhi",
               },
             ].map((founder) => (
-              <Card key={founder.role} className="border-border/50 border-t-[3px] border-t-[var(--color-teal)]">
-                <CardContent className="pt-6">
-                  <h3 className="font-bold text-[var(--color-plum)] text-lg mb-3">{founder.role}</h3>
-                  <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed mb-4">{founder.desc}</p>
-                  <div className="text-xs font-medium text-[var(--color-periwinkle)]">{founder.credential}</div>
-                </CardContent>
-              </Card>
+              <div key={founder.role} className="text-center">
+                <div className="w-16 h-16 rounded-full bg-[var(--color-teal)]/10 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-[var(--color-teal)] text-2xl font-bold">{founder.role[0]}</span>
+                </div>
+                <h3 className="font-bold text-[var(--color-plum)] text-lg mb-1">{founder.role}</h3>
+                <div className="text-xs font-medium text-[var(--color-periwinkle)] mb-3">{founder.credential}</div>
+                <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">{founder.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Services */}
-      <section className="py-16 px-6">
+      <section className="py-20 px-6 bg-[var(--color-muted)]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-plum)] mb-10 text-center">
             Services
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -215,14 +210,16 @@ export default function HomePage() {
                 items: ["AI skills deployment", "Automation program setup", "Custom AI solutions", "End-to-end delivery", "Knowledge transfer"],
               },
             ].map((service) => (
-              <Card key={service.title} className="border-border/50 hover:border-[var(--color-periwinkle)] transition-colors">
+              <Card key={service.title} className="border-none shadow-md bg-white">
                 <CardContent className="pt-6">
-                  <h3 className="font-bold text-[var(--color-plum)] text-lg mb-1">{service.title}</h3>
-                  <div className="text-xs text-[var(--color-muted-foreground)] mb-4">{service.duration}</div>
-                  <ul className="space-y-2">
+                  <div className="flex items-baseline justify-between mb-4">
+                    <h3 className="font-bold text-[var(--color-plum)] text-lg">{service.title}</h3>
+                    <span className="text-xs text-[var(--color-teal)] font-medium bg-[var(--color-teal)]/10 px-2 py-0.5 rounded-full">{service.duration}</span>
+                  </div>
+                  <ul className="space-y-2.5">
                     {service.items.map((item) => (
                       <li key={item} className="text-sm text-[var(--color-muted-foreground)] flex items-start gap-2">
-                        <span className="text-[var(--color-periwinkle)] mt-0.5">&#10003;</span>
+                        <span className="text-[var(--color-teal)] mt-0.5 text-xs">&#9679;</span>
                         {item}
                       </li>
                     ))}
@@ -235,7 +232,7 @@ export default function HomePage() {
       </section>
 
       {/* Express Interest Form */}
-      <section id="express-interest" className="py-16 px-6 bg-[var(--color-navy)]">
+      <section id="express-interest" className="py-20 px-6 bg-[var(--color-navy)]">
         <div className="max-w-xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 text-center">
             Express Interest
