@@ -8,7 +8,7 @@ import { ExpressInterestForm } from "@/components/express-interest-form";
 
 function ExpressInterestInner() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col light-page">
       <SiteHeader />
 
       <section className="py-16 px-6 flex-1">

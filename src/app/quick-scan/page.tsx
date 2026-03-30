@@ -138,7 +138,7 @@ function QuickScanInner() {
   const showResults = mode === "solo" && results;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col light-page">
       <SiteHeader />
 
       {/* Intro */}

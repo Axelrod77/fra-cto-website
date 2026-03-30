@@ -64,7 +64,7 @@ function TeamDashboardInner() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col light-page">
         <SiteHeader />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-[var(--color-muted-foreground)]">Loading team results...</div>
@@ -76,7 +76,7 @@ function TeamDashboardInner() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col light-page">
         <SiteHeader />
         <div className="flex-1 flex items-center justify-center">
           <Card className="max-w-md mx-auto border-red-200">
@@ -103,7 +103,7 @@ function TeamDashboardInner() {
     : "/express-interest";
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col light-page">
       <SiteHeader />
 
       <section className="py-12 px-6">
