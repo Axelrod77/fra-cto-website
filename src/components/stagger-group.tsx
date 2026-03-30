@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, Children, type ReactNode } from 'react'
 import { createSpring, springSetTarget, springSnapToTarget } from '@/lib/spring'
-import { registerSpring, unregisterSpring, isReducedMotion } from '@/lib/spring-manager'
+import { registerSpring, unregisterSpring, isReducedMotion, wakeLoop } from '@/lib/spring-manager'
 
 interface StaggerGroupProps {
   children: ReactNode
@@ -58,6 +58,7 @@ export function StaggerGroup({ children, staggerMs = 100, className = '' }: Stag
             setTimeout(() => {
               springSetTarget(yState, 0)
               springSetTarget(oState, 1)
+              wakeLoop()
             }, delay)
           })
           observer.unobserve(el)

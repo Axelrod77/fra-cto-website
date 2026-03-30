@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { createSpring, springSetTarget } from '@/lib/spring'
-import { registerSpring, unregisterSpring, isReducedMotion } from '@/lib/spring-manager'
+import { registerSpring, unregisterSpring, isReducedMotion, wakeLoop } from '@/lib/spring-manager'
 
 const LOADER_KEY = 'fracto-loader-shown'
 
@@ -44,6 +44,7 @@ export function Loader() {
         }
       })
       springSetTarget(opacity, 0)
+      wakeLoop()
     }, duration)
 
     return () => clearTimeout(timer)

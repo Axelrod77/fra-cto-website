@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { createSpring, springSetTarget, springSnapToTarget, type SpringConfig } from '@/lib/spring'
-import { registerSpring, unregisterSpring, isReducedMotion } from '@/lib/spring-manager'
+import { registerSpring, unregisterSpring, isReducedMotion, wakeLoop } from '@/lib/spring-manager'
 
 let idCounter = 0
 function nextId(prefix: string) { return `${prefix}-${++idCounter}` }
@@ -93,6 +93,7 @@ export function useSpringTransform(
           springSetTarget(tiltX, -dy * tiltDeg)
           springSetTarget(tiltY, dx * tiltDeg)
         }
+        wakeLoop()
       }
 
       onPointerLeave = () => {
@@ -101,6 +102,7 @@ export function useSpringTransform(
         springSetTarget(scaleSpring, 1)
         springSetTarget(tiltX, 0)
         springSetTarget(tiltY, 0)
+        wakeLoop()
       }
 
       el.addEventListener('pointermove', onPointerMove)
@@ -125,6 +127,7 @@ export function useSpringTransform(
               setTimeout(() => {
                 springSetTarget(entranceY, 0)
                 springSetTarget(entranceOpacity, 1)
+                wakeLoop()
               }, delay)
               observer?.unobserve(el)
             }

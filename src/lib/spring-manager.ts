@@ -50,6 +50,11 @@ export function isReducedMotion(): boolean {
   return reducedMotion
 }
 
+// Must be called after springSetTarget to restart the RAF loop
+export function wakeLoop(): void {
+  startLoop()
+}
+
 function tick(now: number): void {
   rafId = null
 

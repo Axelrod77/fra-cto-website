@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore, useCallback } from 'react'
 import { createSpring, springSetTarget, springSnapToTarget, type SpringConfig, type SpringState } from '@/lib/spring'
-import { registerSpring, unregisterSpring, isReducedMotion } from '@/lib/spring-manager'
+import { registerSpring, unregisterSpring, isReducedMotion, wakeLoop } from '@/lib/spring-manager'
 
 let idCounter = 0
 function nextId() { return `spring-${++idCounter}` }
@@ -48,6 +48,7 @@ export function useSpring(
       listenersRef.current.forEach((l) => l())
     } else {
       springSetTarget(state, target)
+      wakeLoop()
     }
   }, [target])
 
