@@ -13,7 +13,7 @@ import { ExpressInterestSection } from "@/components/sections/express-interest";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[var(--color-navy)] flex flex-col">
+    <div className="min-h-screen bg-[var(--color-navy)] flex flex-col snap-scroll">
       <SiteHeader />
       <HeroSection />
       <ChallengeSection />

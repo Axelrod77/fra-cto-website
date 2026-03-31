@@ -31,26 +31,12 @@ export function HeroSection() {
             <p className="text-[var(--color-text-secondary)] leading-relaxed">
               Napoleon played it. Benjamin Franklin studied it. No one could explain how a machine
               could think so brilliantly. The secret?{" "}
-              <strong className="text-[var(--color-text-primary)]">A grandmaster hidden inside</strong>, guiding every move.
+              <strong className="text-[var(--color-text-primary)]">A grandmaster analysing, weighing, deciding and manoeuvring the chess board.</strong>
             </p>
             <p className="text-[var(--color-text-secondary)] leading-relaxed">
               250 years later, the same truth holds. AI tools are everywhere &mdash; but without
               a senior technologist inside your org, they&apos;re just theater.
             </p>
-            <div className="flex gap-3 mt-2">
-              <Link href="/quick-scan">
-                <SpringButton className="bg-[var(--color-teal)] text-white hover:bg-[var(--color-teal-dark)] border-none">
-                  Take the Quick Scan
-                </SpringButton>
-              </Link>
-              <SpringButton
-                variant="ghost"
-                className="text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5 border border-white/10"
-                onClick={() => document.getElementById('challenge')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Learn more
-              </SpringButton>
-            </div>
           </div>
 
           {/* Video */}
@@ -71,8 +57,24 @@ export function HeroSection() {
           </div>
         </div>
 
+        {/* CTAs — centered below */}
+        <div className="flex justify-center gap-3 mt-10">
+          <Link href="/quick-scan">
+            <SpringButton className="bg-[var(--color-teal)] text-white hover:bg-[var(--color-teal-dark)] border-none">
+              Take the Quick Scan
+            </SpringButton>
+          </Link>
+          <SpringButton
+            variant="ghost"
+            className="text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5 border border-white/10"
+            onClick={() => document.getElementById('challenge')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Learn more
+          </SpringButton>
+        </div>
+
         {/* Punchline */}
-        <p ref={punchlineRef} className="text-xl md:text-2xl font-semibold text-white text-center mt-16 will-change-transform">
+        <p ref={punchlineRef} className="text-xl md:text-2xl font-semibold text-white text-center mt-12 will-change-transform">
           FraCTO is the <span className="text-[var(--color-teal)]">human inside</span> the machine.
         </p>
       </div>

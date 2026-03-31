@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { SectionLabel } from '@/components/section-label'
 import { ExpressInterestForm } from '@/components/express-interest-form'
+import { WhatsRunningSection } from '@/components/sections/whats-running'
 
 export function ExpressInterestSection() {
   return (
@@ -19,6 +20,8 @@ export function ExpressInterestSection() {
           </Suspense>
         </div>
       </div>
+      {/* What's Running ticker */}
+      <WhatsRunningSection />
     </section>
   )
 }
