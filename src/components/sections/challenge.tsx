@@ -23,7 +23,7 @@ const challenges = [
 
 export function ChallengeSection() {
   return (
-    <section id="challenge" className="py-20 px-6 bg-[var(--color-navy)]">
+    <section id="challenge" className="flex flex-col justify-center px-6 py-12 bg-[var(--color-navy)]">
       <div className="max-w-3xl mx-auto md:mx-[max(2rem,calc((100%-48rem)/2))]">
         <SectionLabel text="The Enterprise AI Challenge" className="mb-4 block" />
         <p className="text-[var(--color-text-secondary)] max-w-2xl mb-12 leading-relaxed">

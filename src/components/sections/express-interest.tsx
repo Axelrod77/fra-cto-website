@@ -5,7 +5,7 @@ import { WhatsRunningSection } from '@/components/sections/whats-running'
 
 export function ExpressInterestSection() {
   return (
-    <section id="express-interest" className="py-20 px-6 bg-[var(--color-navy)]">
+    <section id="express-interest" className="flex flex-col justify-center px-6 py-12 bg-[var(--color-navy)]">
       <div className="max-w-xl mx-auto">
         <SectionLabel text="Get Started" className="mb-3 block text-center" />
         <h2 className="text-xl md:text-2xl font-semibold text-white mb-2 text-center">

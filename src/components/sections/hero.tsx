@@ -19,9 +19,9 @@ export function HeroSection() {
   })
 
   return (
-    <section className="pt-28 pb-16 md:pt-36 md:pb-24 px-6 bg-[var(--color-navy)]">
+    <section className="flex flex-col justify-center px-6 pt-4 pb-8 bg-[var(--color-navy)]">
       <div className="max-w-[1100px] mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Copy */}
           <div className="flex flex-col gap-5 order-2 md:order-1">
             <SectionLabel text="Fractional CTO for Enterprise AI" />

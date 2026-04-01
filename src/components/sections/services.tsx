@@ -23,23 +23,23 @@ const services = [
 
 export function ServicesSection() {
   return (
-    <section className="py-20 px-6 bg-[var(--color-light-bg)]">
-      <div className="max-w-4xl mx-auto">
+    <section className="flex flex-col justify-center px-6 py-12 bg-[var(--color-light-bg)]">
+      <div className="max-w-5xl mx-auto w-full">
         <SectionLabel text="Services" color="navy" className="mb-10 block" />
         <div className="grid md:grid-cols-3 gap-6">
           {services.map((service, i) => (
             <SpringCard key={service.title} entranceDelay={i * 100}>
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-black/5 h-full">
-                <div className="flex items-baseline justify-between mb-4">
-                  <h3 className="font-semibold text-[var(--color-light-text)] text-lg">{service.title}</h3>
+              <div className="bg-white rounded-xl p-8 shadow-sm border border-black/5 h-full flex flex-col">
+                <div className="flex items-baseline justify-between mb-6">
+                  <h3 className="font-semibold text-[var(--color-light-text)] text-xl">{service.title}</h3>
                   <span className="text-xs text-[var(--color-teal)] font-mono font-medium bg-[var(--color-teal)]/10 px-2.5 py-1 rounded-full">
                     {service.duration}
                   </span>
                 </div>
-                <ul className="space-y-2.5">
+                <ul className="space-y-4">
                   {service.items.map((item) => (
-                    <li key={item} className="text-sm text-[var(--color-light-muted)] flex items-start gap-2.5">
-                      <span className="text-[var(--color-teal)] mt-1.5 text-[6px]">&#9679;</span>
+                    <li key={item} className="text-base text-[var(--color-light-muted)] flex items-start gap-3">
+                      <span className="text-[var(--color-teal)] mt-2 text-[7px]">&#9679;</span>
                       {item}
                     </li>
                   ))}

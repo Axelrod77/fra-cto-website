@@ -23,7 +23,7 @@ const founders = [
 
 export function FoundersSection() {
   return (
-    <section className="py-20 px-6 bg-[var(--color-navy)]">
+    <section className="flex flex-col justify-center px-6 py-12 bg-[var(--color-navy)]">
       <div className="max-w-4xl mx-auto">
         <SectionLabel text="Who's Behind FraCTO" className="mb-3 block" />
         <p className="text-[var(--color-text-secondary)] max-w-2xl mb-14 leading-relaxed">

@@ -31,24 +31,24 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-20 px-6 bg-[var(--color-light-bg)]">
-      <div className="max-w-4xl mx-auto">
+    <section className="flex flex-col justify-center px-6 py-12 bg-[var(--color-light-bg)]">
+      <div className="max-w-5xl mx-auto w-full">
         <SectionLabel text="How It Works" color="navy" className="mb-10 block" />
 
         {/* Horizontal stepper line (desktop only) */}
-        <StaggerGroup staggerMs={120} className="grid md:grid-cols-3 gap-8 relative">
+        <StaggerGroup staggerMs={120} className="grid md:grid-cols-3 gap-6 relative">
           {/* Connecting line */}
           <div className="hidden md:block absolute top-[28px] left-[calc(16.67%+12px)] right-[calc(16.67%+12px)] h-px bg-[var(--color-teal)]/30" />
 
           {steps.map((item) => (
-            <div key={item.step} className="text-center relative">
-              <div className="w-14 h-14 rounded-full border-2 border-[var(--color-teal)] flex items-center justify-center mx-auto mb-5 bg-[var(--color-light-bg)] relative z-10">
-                <span className="text-[var(--color-teal)] text-sm font-mono font-medium">{item.step}</span>
+            <div key={item.step} className="relative bg-white rounded-xl border border-black/5 shadow-sm p-8 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full border-2 border-[var(--color-teal)] flex items-center justify-center mx-auto mb-6 bg-[var(--color-light-bg)] relative z-10">
+                <span className="text-[var(--color-teal)] text-base font-mono font-medium">{item.step}</span>
               </div>
-              <h3 className="font-semibold text-[var(--color-light-text)] mb-2 text-lg">{item.title}</h3>
-              <p className="text-sm text-[var(--color-light-muted)] leading-relaxed mb-4">{item.desc}</p>
+              <h3 className="font-semibold text-[var(--color-light-text)] mb-3 text-xl">{item.title}</h3>
+              <p className="text-base text-[var(--color-light-muted)] leading-relaxed mb-6">{item.desc}</p>
               {item.cta && item.href && (
-                <Link href={item.href}>
+                <Link href={item.href} className="mt-auto">
                   <SpringButton variant="ghost" className="text-[var(--color-teal)] hover:text-[var(--color-teal-dark)] hover:bg-[var(--color-teal)]/10">
                     {item.cta} &rarr;
                   </SpringButton>
