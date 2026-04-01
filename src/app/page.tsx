@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { ExpressInterestForm } from "@/components/express-interest-form";
 import { SectionLabel } from "@/components/section-label";
 import { HeroSection } from "@/components/sections/hero";
@@ -22,7 +21,6 @@ export default function HomePage() {
         <FoundersSection />
         <ServicesSection />
         <ExpressInterestSection />
-        <SiteFooter />
       </div>
     </>
   );

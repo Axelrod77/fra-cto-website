@@ -98,8 +98,8 @@ function TickerRow({ speed, reverse, fontSize }: { speed: number; reverse: boole
 
 export function WhatsRunningSection() {
   return (
-    <div className="py-12 overflow-hidden border-t border-white/5">
-      <SectionLabel text="// what's_running" className="mb-8 block px-6" />
+    <div className="py-6 overflow-hidden border-t border-white/5">
+      <SectionLabel text="// what's_running" className="mb-4 block px-6" />
       <div className="space-y-3">
         <TickerRow speed={180} reverse={false} fontSize="12px" />
         <TickerRow speed={200} reverse={true} fontSize="13px" />
