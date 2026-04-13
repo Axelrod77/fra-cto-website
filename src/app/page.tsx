@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { ScrollIndicator } from "@/components/scroll-indicator";
 import { ExpressInterestForm } from "@/components/express-interest-form";
 import { SectionLabel } from "@/components/section-label";
 import { HeroSection } from "@/components/sections/hero";
@@ -14,6 +15,7 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader />
+      <ScrollIndicator />
       <div className="bg-white snap-scroll">
         <HeroSection />
         <ChallengeSection />

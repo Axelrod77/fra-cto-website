@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { SectionLabel } from '@/components/section-label'
 import { SpringCard } from '@/components/spring-card'
 
@@ -24,24 +25,51 @@ const founders = [
 export function FoundersSection() {
   return (
     <section className="flex flex-col justify-center px-6 py-12 bg-white">
-      <div className="max-w-4xl mx-auto">
-        <SectionLabel text="Who's Behind FraCTO" className="mb-3 block" />
-        <p className="text-[var(--color-text-secondary)] max-w-2xl mb-14 leading-relaxed">
-          Three founders with complementary expertise — enterprise IT, business building, and AI engineering.
-        </p>
-        <div className="grid md:grid-cols-3 gap-6">
-          {founders.map((founder, i) => (
-            <SpringCard key={founder.role} entranceDelay={i * 100}>
-              <div className="bg-white rounded-xl p-6 border border-[var(--color-navy)]/10 shadow-sm hover:shadow-md transition-shadow h-full">
-                <div className="w-14 h-14 rounded-full bg-[var(--color-teal)]/10 flex items-center justify-center mb-4">
-                  <span className="text-[var(--color-teal)] text-xl font-bold">{founder.role[0]}</span>
-                </div>
-                <h3 className="font-semibold text-[var(--color-navy)] text-lg mb-1">{founder.role}</h3>
-                <div className="text-xs font-mono font-medium text-[var(--color-teal)] mb-3">{founder.credential}</div>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{founder.desc}</p>
-              </div>
-            </SpringCard>
-          ))}
+      <div className="max-w-6xl mx-auto w-full">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+          {/* Left: copy + compact founder cards */}
+          <div className="flex flex-col gap-6">
+            <div>
+              <SectionLabel text="Who's Behind FraCTO" className="mb-3 block" />
+              <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-[var(--color-navy)] mb-3 leading-tight">
+                Three founders. One operating discipline.
+              </h2>
+              <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                Complementary expertise across enterprise IT, business building,
+                and AI engineering &mdash; combined into a single embedded practice
+                that owns outcomes, not decks.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              {founders.map((founder, i) => (
+                <SpringCard key={founder.role} entranceDelay={i * 80}>
+                  <div className="bg-white rounded-lg p-4 border border-[var(--color-navy)]/10 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-full bg-[var(--color-teal)]/10 flex items-center justify-center shrink-0">
+                        <span className="text-[var(--color-teal)] text-sm font-bold">{founder.role[0]}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-[var(--color-navy)] text-sm leading-tight">{founder.role}</h3>
+                        <div className="text-[10px] font-mono font-medium text-[var(--color-teal)] mb-1 uppercase tracking-wider">{founder.credential}</div>
+                        <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed line-clamp-3">{founder.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                </SpringCard>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: editorial image */}
+          <div className="relative rounded-sm overflow-hidden shadow-lg min-h-[400px] md:min-h-0">
+            <Image
+              src="/2.png"
+              alt="Senior operator reviewing a document in a focused workspace"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>

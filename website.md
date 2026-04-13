@@ -9,7 +9,7 @@
 - Backend: Cloudflare D1 for Team Quick Scan API
 
 ## Pages
-1. **Home** (`/`) — Dark navy, full-viewport scroll snap, branded loader, Turk video hero, spring-physics cards
+1. **Home** (`/`) — White-first, full-viewport scroll snap, branded loader, Turk video hero, spring-physics cards, editorial image splits on Challenge + Founders sections, fixed right-side `ScrollIndicator` (desktop-only) tracking active section
 2. **Quick Scan** (`/quick-scan`) — Light page. Solo (client-side) or Team (D1 backend) mode, 14 MCQs across 12 dimensions
 3. **Team Dashboard** (`/quick-scan/team?code=X`) — Light page. Composite scores, per-dimension variance, individual responses
 4. **Express Interest** (`/express-interest`) — Light page. Web3Forms submission, shows score banner from Quick Scan
@@ -22,6 +22,8 @@
 - Scroll snap: `scroll-snap-type: y mandatory`, sections sized `calc(100vh - 65px)`
 - Spring animations: entrance fade-up, magnetic hover, tilt, stagger. Reduced-motion: snap to target.
 - Typography: Montserrat everywhere. `--font-geist-sans` + `--font-mono` both map to Montserrat (mono slot kept for `.font-mono` class usage on labels/accents — tabular feel without a second font load).
+- Editorial image splits (PA-Consulting-inspired): Challenge + Founders use 2-col `grid` with copy on one side and a full-height photo on the other (`public/1.png`, `public/2.png`). Keep new editorial sections under the snap-section height (≤ viewport) or they clip.
+- `ScrollIndicator` (`src/components/scroll-indicator.tsx`): fixed right-edge dots, listens to `.snap-scroll` scroll, active section = `round(scrollTop / clientHeight)`. Update `CHAPTERS` array when adding/removing home sections.
 
 ## Express Interest Form
 - Web3Forms (free, 250/mo). Env var: `NEXT_PUBLIC_WEB3FORMS_KEY` (intentionally client-side)
