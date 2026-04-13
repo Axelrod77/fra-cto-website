@@ -9,6 +9,11 @@ export function SiteFooter() {
           <Image src="/logo.svg" alt="FraCTO" width={20} height={20} className="w-5 h-5" />
           <span className="font-medium text-[var(--color-navy)]">FraCTO</span>
         </div>
+        <div className="hidden md:block flex-1 text-center">
+          <span className="text-[11px] uppercase tracking-[0.24em] font-mono font-semibold text-[var(--color-navy)]/70">
+            Fractional CTO for AI <span className="text-[var(--color-teal)]">&mdash;</span> Elevating Value
+          </span>
+        </div>
         <div className="flex items-center gap-6">
           <Link href="/quick-scan" className="hover:text-[var(--color-teal)] transition-colors">
             Quick Scan

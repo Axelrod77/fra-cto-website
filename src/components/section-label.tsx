@@ -10,7 +10,7 @@ export function SectionLabel({ text, color = 'teal', className = '' }: SectionLa
     : 'text-[var(--color-navy)]'
 
   return (
-    <span className={`text-[10px] uppercase tracking-[0.2em] font-mono font-medium ${colorClass} ${className}`}>
+    <span className={`text-xs uppercase tracking-[0.24em] font-mono font-bold ${colorClass} ${className}`}>
       {text}
     </span>
   )

@@ -4,21 +4,21 @@ import Image from 'next/image'
 import { SectionLabel } from '@/components/section-label'
 import { StaggerGroup } from '@/components/stagger-group'
 
-const challenges = [
+const pillars = [
   {
-    num: "01",
-    title: "Misaligned incentives",
-    desc: "Big IT partners and VC-introduced agencies advise on transformations that affect their own revenue or portfolio. Independence removes that tension.",
+    num: "18",
+    label: "AI Skills",
+    desc: "Each phase — Assess, Align, A'xecute — is backed by structured, reusable skills, not one-off decks.",
   },
   {
-    num: "02",
-    title: "Strategy-execution gap",
-    desc: "Great strategies need embedded follow-through. Plans without execution ownership stall.",
+    num: "12",
+    label: "Dimensions",
+    desc: "A shared scorecard everyone can rally around — your team, your partners, your board.",
   },
   {
-    num: "03",
-    title: "Horizontal complexity",
-    desc: "From founder-led startups to matrixed enterprises, AI cuts across teams, budgets, and reporting lines. Someone needs to own the horizontal.",
+    num: "E2E",
+    label: "Ownership",
+    desc: "From first signal to scaled outcome. We stay in the room with SIs, hyperscalers, and your team.",
   },
 ]
 
@@ -30,27 +30,32 @@ export function ChallengeSection() {
           {/* Copy */}
           <div>
             <SectionLabel text="The AI Execution Challenge" className="mb-4 block" />
-            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-[var(--color-navy)] mb-5 leading-tight">
-              The ambition is there. The independence usually isn&apos;t.
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[var(--color-navy)] mb-5 leading-tight">
+              Strategy is solved. Execution is where value gets won.
             </h2>
-            <p className="text-[var(--color-text-secondary)] mb-10 leading-relaxed">
-              Whether you&apos;re a 20-person startup or a 5,000-seat GCC, the
-              ambition for AI is there &mdash; but the partners advising you have
-              competing incentives. Independent guidance changes the equation.
+            <p className="text-[var(--color-text-secondary)] mb-6 leading-relaxed">
+              Your strategy is sharp, your partners are world-class, and your teams are motivated. What&apos;s often missing
+              is a thin, independent layer that owns the <strong className="text-[var(--color-navy)]">end-to-end</strong> journey
+              — insight to outcome, POC to production — across every partner in the stack.
             </p>
-            <StaggerGroup staggerMs={100} className="space-y-6">
-              {challenges.map((item) => (
-                <div key={item.num} className="flex gap-5 items-start">
-                  <span className="text-4xl font-bold text-[var(--color-teal)]/30 leading-none mt-1 shrink-0 font-mono">
-                    {item.num}
-                  </span>
-                  <div>
-                    <h3 className="font-semibold text-[var(--color-navy)] mb-1 text-base">{item.title}</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p>
-                  </div>
+            <p className="text-sm text-[var(--color-text-secondary)] mb-8 leading-relaxed">
+              FraCTO sits alongside Microsoft, AWS, TCS, Databricks, Snowflake, OpenAI, Anthropic and your internal teams.
+              Not in competition — in orchestration. Platform-agnostic by design, with no billing to protect.
+            </p>
+
+            <StaggerGroup staggerMs={100} className="grid grid-cols-3 gap-4">
+              {pillars.map((p) => (
+                <div key={p.label} className="border-l-2 border-[var(--color-teal)]/40 pl-3">
+                  <div className="text-3xl font-bold text-[var(--color-teal)] leading-none font-mono">{p.num}</div>
+                  <div className="text-[10px] uppercase tracking-widest font-mono font-bold text-[var(--color-navy)] mt-1">{p.label}</div>
+                  <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mt-2">{p.desc}</p>
                 </div>
               ))}
             </StaggerGroup>
+
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--color-teal)] mt-8 font-bold">
+              18 AI Skills × 12 Dimensions × End-to-End Ownership
+            </p>
           </div>
 
           {/* Image */}

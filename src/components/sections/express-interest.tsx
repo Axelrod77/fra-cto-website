@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { SectionLabel } from '@/components/section-label'
 import { ExpressInterestForm } from '@/components/express-interest-form'
-import { WhatsRunningSection } from '@/components/sections/whats-running'
 
 export function ExpressInterestSection() {
   return (
@@ -11,7 +10,7 @@ export function ExpressInterestSection() {
       {/* Form — centered in available space */}
       <div className="max-w-xl mx-auto w-full flex-1 flex flex-col justify-center">
         <SectionLabel text="Get Started" className="mb-3 block text-center" />
-        <h2 className="text-xl md:text-2xl font-semibold text-[var(--color-navy)] mb-2 text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-[var(--color-navy)] mb-2 text-center">
           Express Interest
         </h2>
         <p className="text-[var(--color-text-secondary)] text-center mb-6">
@@ -23,8 +22,6 @@ export function ExpressInterestSection() {
           </Suspense>
         </div>
       </div>
-      {/* What's Running ticker */}
-      <WhatsRunningSection />
       {/* Footer */}
       <div className="pt-4 border-t border-[var(--color-teal)]/10">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--color-text-muted)]">

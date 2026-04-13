@@ -9,7 +9,7 @@
 - Backend: Cloudflare D1 for Team Quick Scan API
 
 ## Pages
-1. **Home** (`/`) — White-first, full-viewport scroll snap, branded loader, Turk video hero, spring-physics cards, editorial image splits on Challenge + Founders sections, fixed right-side `ScrollIndicator` (desktop-only) tracking active section
+1. **Home** (`/`) — White-first, full-viewport scroll snap, branded loader, Turk video hero (5/6 aspect, balanced columns), editorial image split on Challenge, 4-step "How It Works" (Quick Scan → Assess 2wk → Align 2–4wk → A'xecute ~6mo), Founders journey arrow (IT Leader → AI-Native → Entrepreneur), spring-physics cards, fixed right-side `ScrollIndicator` (desktop-only) tracking active section
 2. **Quick Scan** (`/quick-scan`) — Light page. Solo (client-side) or Team (D1 backend) mode, 14 MCQs across 12 dimensions
 3. **Team Dashboard** (`/quick-scan/team?code=X`) — Light page. Composite scores, per-dimension variance, individual responses
 4. **Express Interest** (`/express-interest`) — Light page. Web3Forms submission, shows score banner from Quick Scan
@@ -22,8 +22,10 @@
 - Scroll snap: `scroll-snap-type: y mandatory`, sections sized `calc(100vh - 65px)`
 - Spring animations: entrance fade-up, magnetic hover, tilt, stagger. Reduced-motion: snap to target.
 - Typography: Montserrat everywhere. `--font-geist-sans` + `--font-mono` both map to Montserrat (mono slot kept for `.font-mono` class usage on labels/accents — tabular feel without a second font load).
-- Editorial image splits (PA-Consulting-inspired): Challenge + Founders use 2-col `grid` with copy on one side and a full-height photo on the other (`public/1.png`, `public/2.png`). Keep new editorial sections under the snap-section height (≤ viewport) or they clip.
-- `ScrollIndicator` (`src/components/scroll-indicator.tsx`): fixed right-edge dots, listens to `.snap-scroll` scroll, active section = `round(scrollTop / clientHeight)`. Update `CHAPTERS` array when adding/removing home sections.
+- Editorial image split (PA-Consulting-inspired): Challenge section uses 2-col `grid` with copy + 3-pillar "18 × 12 × E2E" stats vs full-height photo (`public/1.png`). Founders now uses a 3-col journey arrow instead of a photo split. Keep editorial sections under the snap-section height (≤ viewport) or they clip.
+- Header + footer carry centered tagline "Fractional CTO for AI — Elevating Value" (desktop inline, mobile sub-strip in header).
+- `SectionLabel` eyebrow labels are `text-xs font-mono font-bold` with `tracking-[0.24em]`; section h2s use `font-bold` for stronger hierarchy.
+- `ScrollIndicator` (`src/components/scroll-indicator.tsx`): fixed right-edge dots, listens to `.snap-scroll` scroll, active section = `round(scrollTop / clientHeight)`. Update `CHAPTERS` array when adding/removing home sections. Current chapters: Intro, Challenge, How it works, Founders, Services, Contact (6).
 
 ## Express Interest Form
 - Web3Forms (free, 250/mo). Env var: `NEXT_PUBLIC_WEB3FORMS_KEY` (intentionally client-side)
@@ -38,6 +40,7 @@
 - D1 binding: variable `DB` → database `fracto-team-scans` (set in Pages → Settings → Functions)
 - No pricing on website (founder request). No founder names — roles + credentials only.
 - Copy tone: neutral/positive, no finger-pointing. Audience is **dual** (startups + GCCs + enterprises) — avoid "enterprise"-only framing in headlines.
+- Challenge section is partner-friendly on purpose: names MS/AWS/TCS/Databricks/Snowflake/OpenAI/Anthropic as collaborators ("not in competition — in orchestration"). Source of truth for this narrative + the 3 phases is the LSEG pitch deck (slides 3, 4, 11). Canonical phase timings: Assess 2 wk, Align 2–4 wk, A'xecute ~6 mo.
 - `src/app/sitemap.ts` requires `export const dynamic = "force-static"` (Next 16 + `output: "export"` — omission causes CF Pages build failure)
 
 ## Security & Discoverability
