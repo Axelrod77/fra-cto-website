@@ -14,7 +14,7 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader />
-      <div className="bg-[var(--color-navy)] snap-scroll">
+      <div className="bg-white snap-scroll">
         <HeroSection />
         <ChallengeSection />
         <HowItWorksSection />

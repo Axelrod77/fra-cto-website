@@ -1,7 +1,7 @@
 # fra-cto.com Marketing Website
 
 ## Stack & Deployment
-- Next.js 16 static export, Tailwind v4, shadcn/ui, Inter + JetBrains Mono
+- Next.js 16 static export, Tailwind v4, shadcn/ui, Montserrat (single family, weights 300-800, used for both sans and mono slots)
 - Custom spring physics engine (~2KB, zero deps) for all animations
 - Cloudflare Pages (preset **None**, not "Next.js"), build output: `out`
 - Repo: Axelrod77/fra-cto-website (repo root = `website/` contents)
@@ -15,11 +15,13 @@
 4. **Express Interest** (`/express-interest`) — Light page. Web3Forms submission, shows score banner from Quick Scan
 
 ## Design System
-- **Dark-first** (navy #0D1B2A + teal #0097A7), light sections as contrast breaks
-- `.light-page` CSS class overrides vars for Quick Scan / Express Interest pages
-- Legacy aliases: `--color-plum` → navy, `--color-periwinkle` → teal
+- **White-first** (#FFFFFF bg, navy #0D1B2A text) with teal #0097A7 as the splash accent (buttons, numerals, highlights)
+- `.light-page` CSS class is now a no-op alias of root (kept so existing Quick Scan / Express Interest pages keep compiling)
+- `.dark-section` opt-in helper available for any future navy-splash section (inverse tokens, navy bg)
+- Legacy aliases retained: `--color-plum` → navy, `--color-periwinkle` → teal
 - Scroll snap: `scroll-snap-type: y mandatory`, sections sized `calc(100vh - 65px)`
 - Spring animations: entrance fade-up, magnetic hover, tilt, stagger. Reduced-motion: snap to target.
+- Typography: Montserrat everywhere. `--font-geist-sans` + `--font-mono` both map to Montserrat (mono slot kept for `.font-mono` class usage on labels/accents — tabular feel without a second font load).
 
 ## Express Interest Form
 - Web3Forms (free, 250/mo). Env var: `NEXT_PUBLIC_WEB3FORMS_KEY` (intentionally client-side)
@@ -33,7 +35,7 @@
 - Cloudflare Pages preset must be "None" (not "Next.js" — that triggers OpenNext which fails with static export)
 - D1 binding: variable `DB` → database `fracto-team-scans` (set in Pages → Settings → Functions)
 - No pricing on website (founder request). No founder names — roles + credentials only.
-- Copy tone: neutral/positive, no finger-pointing
+- Copy tone: neutral/positive, no finger-pointing. Audience is **dual** (startups + GCCs + enterprises) — avoid "enterprise"-only framing in headlines.
 - `src/app/sitemap.ts` requires `export const dynamic = "force-static"` (Next 16 + `output: "export"` — omission causes CF Pages build failure)
 
 ## Security & Discoverability

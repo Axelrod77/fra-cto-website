@@ -7,17 +7,17 @@ import { WhatsRunningSection } from '@/components/sections/whats-running'
 
 export function ExpressInterestSection() {
   return (
-    <section id="express-interest" className="flex flex-col justify-between px-6 py-8 bg-[var(--color-navy)]">
+    <section id="express-interest" className="flex flex-col justify-between px-6 py-8 bg-white">
       {/* Form — centered in available space */}
       <div className="max-w-xl mx-auto w-full flex-1 flex flex-col justify-center">
         <SectionLabel text="Get Started" className="mb-3 block text-center" />
-        <h2 className="text-xl md:text-2xl font-semibold text-white mb-2 text-center">
+        <h2 className="text-xl md:text-2xl font-semibold text-[var(--color-navy)] mb-2 text-center">
           Express Interest
         </h2>
         <p className="text-[var(--color-text-secondary)] text-center mb-6">
           Tell us about your organization and we&apos;ll reach out to discuss how we can help.
         </p>
-        <div className="bg-[var(--color-navy-mid)] rounded-xl border border-[var(--color-teal)]/10 p-6">
+        <div className="bg-white rounded-xl border border-[var(--color-navy)]/10 shadow-sm p-6">
           <Suspense fallback={<div className="py-8 text-center text-[var(--color-text-muted)]">Loading...</div>}>
             <ExpressInterestForm />
           </Suspense>
@@ -30,7 +30,7 @@ export function ExpressInterestSection() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[var(--color-text-muted)]">
           <div className="flex items-center gap-2">
             <Image src="/logo.svg" alt="FraCTO" width={20} height={20} className="w-5 h-5" />
-            <span className="font-medium text-white">FraCTO</span>
+            <span className="font-medium text-[var(--color-navy)]">FraCTO</span>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/quick-scan" className="hover:text-[var(--color-teal)] transition-colors">

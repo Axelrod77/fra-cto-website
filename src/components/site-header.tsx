@@ -9,18 +9,18 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="border-b border-white/5 bg-[var(--color-navy)]/80 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-[var(--color-navy)]/8 bg-white/85 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Image src="/logo.svg" alt="FraCTO" width={32} height={32} className="w-8 h-8" />
-          <span className="text-xl font-semibold tracking-tight text-white">
+          <span className="text-xl font-semibold tracking-tight text-[var(--color-navy)]">
             FraCTO
           </span>
         </Link>
 
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-4">
-          <Link href="/quick-scan" className="inline-flex items-center justify-center border border-[var(--color-teal)]/30 text-[var(--color-text-secondary)] hover:text-white hover:border-[var(--color-teal)]/60 h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          <Link href="/quick-scan" className="inline-flex items-center justify-center border border-[var(--color-teal)]/40 text-[var(--color-navy)] hover:text-[var(--color-teal)] hover:border-[var(--color-teal)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Quick Scan
           </Link>
           <Link href="/express-interest">
@@ -32,7 +32,7 @@ export function SiteHeader() {
 
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden p-2 text-white"
+          className="sm:hidden p-2 text-[var(--color-navy)]"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -48,8 +48,8 @@ export function SiteHeader() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-white/5 bg-[var(--color-navy-mid)] px-6 py-4 flex flex-col gap-3">
-          <Link href="/quick-scan" onClick={() => setMenuOpen(false)} className="inline-flex items-center w-full border border-[var(--color-teal)]/30 text-[var(--color-text-secondary)] hover:text-white h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+        <div className="sm:hidden border-t border-[var(--color-navy)]/8 bg-white px-6 py-4 flex flex-col gap-3">
+          <Link href="/quick-scan" onClick={() => setMenuOpen(false)} className="inline-flex items-center w-full border border-[var(--color-teal)]/40 text-[var(--color-navy)] hover:text-[var(--color-teal)] h-10 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Quick Scan
           </Link>
           <Link href="/express-interest" onClick={() => setMenuOpen(false)}>

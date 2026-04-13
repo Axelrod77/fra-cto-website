@@ -23,7 +23,7 @@ const founders = [
 
 export function FoundersSection() {
   return (
-    <section className="flex flex-col justify-center px-6 py-12 bg-[var(--color-navy)]">
+    <section className="flex flex-col justify-center px-6 py-12 bg-white">
       <div className="max-w-4xl mx-auto">
         <SectionLabel text="Who's Behind FraCTO" className="mb-3 block" />
         <p className="text-[var(--color-text-secondary)] max-w-2xl mb-14 leading-relaxed">
@@ -32,11 +32,11 @@ export function FoundersSection() {
         <div className="grid md:grid-cols-3 gap-6">
           {founders.map((founder, i) => (
             <SpringCard key={founder.role} entranceDelay={i * 100}>
-              <div className="bg-[var(--color-navy-mid)] rounded-xl p-6 border border-[var(--color-teal)]/10 h-full">
+              <div className="bg-white rounded-xl p-6 border border-[var(--color-navy)]/10 shadow-sm hover:shadow-md transition-shadow h-full">
                 <div className="w-14 h-14 rounded-full bg-[var(--color-teal)]/10 flex items-center justify-center mb-4">
                   <span className="text-[var(--color-teal)] text-xl font-bold">{founder.role[0]}</span>
                 </div>
-                <h3 className="font-semibold text-white text-lg mb-1">{founder.role}</h3>
+                <h3 className="font-semibold text-[var(--color-navy)] text-lg mb-1">{founder.role}</h3>
                 <div className="text-xs font-mono font-medium text-[var(--color-teal)] mb-3">{founder.credential}</div>
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{founder.desc}</p>
               </div>

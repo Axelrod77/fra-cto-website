@@ -2,21 +2,21 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #0D1B2A;
-  --foreground: #E0E7EE;
-  --card: #1B2A3D;
-  --card-foreground: #E0E7EE;
-  --primary: #0D1B2A;
-  --primary-foreground: #F7F9FB;
-  --secondary: #1B2A3D;
-  --secondary-foreground: #E0E7EE;
-  --muted: #EDF2F7;
-  --muted-foreground: #78909C;
+  --background: #FFFFFF;
+  --foreground: #0D1B2A;
+  --card: #FFFFFF;
+  --card-foreground: #0D1B2A;
+  --primary: #0097A7;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F4F7FA;
+  --secondary-foreground: #0D1B2A;
+  --muted: #F4F7FA;
+  --muted-foreground: #4A6274;
   --accent: #0097A7;
   --accent-foreground: #FFFFFF;
   --destructive: #C62828;
-  --border: rgba(0, 151, 167, 0.15);
-  --input: #263238;
+  --border: #E2E8EE;
+  --input: #CFD8DC;
   --ring: #0097A7;
 }
 
@@ -47,9 +47,9 @@
   --color-teal-dark: #00796B;
   --color-teal-light: #E0F2F1;
   --color-slate: #4A6274;
-  --color-text-primary: #E0E7EE;
-  --color-text-secondary: #8B9DAF;
-  --color-text-muted: #5A6F82;
+  --color-text-primary: #0D1B2A;
+  --color-text-secondary: #4A6274;
+  --color-text-muted: #6B7E91;
   /* Light section tokens */
   --color-light-bg: #F7F9FB;
   --color-light-text: #0D1B2A;
@@ -96,14 +96,28 @@ body {
   to { transform: translateX(-50%); }
 }
 
-/* Light page override — used by Quick Scan, Express Interest, and other non-homepage pages */
+/* Light page override — kept as a no-op alias so existing usage Just Works */
 .light-page {
-  --background: #F7F9FB;
-  --foreground: #263238;
+  --background: #FFFFFF;
+  --foreground: #0D1B2A;
   --card: #FFFFFF;
-  --card-foreground: #263238;
-  --secondary: #EDF2F7;
+  --card-foreground: #0D1B2A;
+  --secondary: #F4F7FA;
   --secondary-foreground: #0D1B2A;
-  --border: #CFD8DC;
+  --border: #E2E8EE;
   --input: #CFD8DC;
+}
+
+/* Dark section — opt-in inverse for the occasional navy splash (e.g., footer) */
+.dark-section {
+  --background: #0D1B2A;
+  --foreground: #E0E7EE;
+  --card: #1B2A3D;
+  --card-foreground: #E0E7EE;
+  --secondary: #1B2A3D;
+  --secondary-foreground: #E0E7EE;
+  --muted-foreground: #8B9DAF;
+  --border: rgba(255, 255, 255, 0.12);
+  background: var(--background);
+  color: var(--foreground);
 }
