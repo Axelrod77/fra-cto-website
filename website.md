@@ -20,12 +20,12 @@
 - `.light-page` CSS class is now a no-op alias of root (kept so existing Quick Scan / Express Interest pages keep compiling)
 - `.dark-section` opt-in helper available for any future navy-splash section (inverse tokens, navy bg)
 - Legacy aliases retained: `--color-plum` → navy, `--color-periwinkle` → teal
-- Scroll snap: `scroll-snap-type: y mandatory`, sections sized `calc(100vh - 65px)`
+- **Scroll snap (responsive)**: mandatory snap on desktop (≥1024px, `calc(100vh - 65px)`); proximity snap on tablet (768–1023px, `calc(100vh - 93px)` — accounts for tagline strip in header); snap **disabled** on mobile (<768px, natural scroll). All three breakpoints defined in `globals.css`.
 - Spring animations: entrance fade-up, magnetic hover, tilt, stagger. Reduced-motion: snap to target.
 - Typography: Montserrat everywhere. `--font-geist-sans` + `--font-mono` both map to Montserrat (mono slot kept for `.font-mono` class usage on labels/accents — tabular feel without a second font load).
 - Editorial image split (PA-Consulting-inspired): Challenge section uses 2-col `grid` with copy + 3-pillar "18 × 12 × E2E" stats vs landscape photo (`public/1.png`, `aspect-[4/3]`). Founders now uses a 3-col journey arrow instead of a photo split. Keep editorial sections under the snap-section height (≤ viewport) or they clip.
 - Hero section has no eyebrow SectionLabel — heading starts directly with "In 1770…". Video is `aspect-[1/1]` on desktop (square crop).
-- Challenge stat boxes (18/12/E2E) use `flex flex-col h-full` with `flex-1` on the description to ensure equal box heights.
+- Challenge stat boxes (18/12/E2E) use `flex flex-col h-full` with `flex-1` on the description to ensure equal box heights. Pillar grid is `grid-cols-1 sm:grid-cols-3` — stacks to single column on phones (<640px) to avoid crushed 98px columns.
 - `SectionLabel` eyebrow labels are `text-xs font-mono font-bold` with `tracking-[0.24em]`; section h2s use `font-bold` for stronger hierarchy.
 - `ScrollIndicator` (`src/components/scroll-indicator.tsx`): fixed right-edge dots, listens to `.snap-scroll` scroll, active section = `round(scrollTop / clientHeight)`. Only visible at `lg` breakpoint (≥1024px) to prevent overlap at tablet widths. Update `CHAPTERS` array when adding/removing home sections. Current chapters: Intro, Challenge, How it works, Founders, Services, Contact (6).
 - **Copy tone**: no em dashes anywhere in body copy. Anti-AI writing rules apply: no "delve/landscape/robust/leverage/utilize/straightforward/game-changer/crucial/realm/foster/embark" and no "moreover/furthermore/additionally/in conclusion" transitions.
