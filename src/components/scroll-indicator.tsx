@@ -48,7 +48,7 @@ export function ScrollIndicator() {
   return (
     <nav
       aria-label="Section progress"
-      className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-5 items-end"
+      className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-5 items-end"
     >
       {CHAPTERS.map((c, i) => {
         const isActive = i === active

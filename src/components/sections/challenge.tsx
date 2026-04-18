@@ -8,12 +8,12 @@ const pillars = [
   {
     num: "18",
     label: "AI Skills",
-    desc: "Each phase — Assess, Align, A'xecute — is backed by structured, reusable skills, not one-off decks.",
+    desc: "Each phase (Assess, Align, A'xecute) is backed by structured, reusable skills, not one-off decks.",
   },
   {
     num: "12",
     label: "Dimensions",
-    desc: "A shared scorecard everyone can rally around — your team, your partners, your board.",
+    desc: "A shared scorecard everyone can rally around: your team, your partners, your board.",
   },
   {
     num: "E2E",
@@ -36,19 +36,19 @@ export function ChallengeSection() {
             <p className="text-[var(--color-text-secondary)] mb-6 leading-relaxed">
               Your strategy is sharp, your partners are world-class, and your teams are motivated. What&apos;s often missing
               is a thin, independent layer that owns the <strong className="text-[var(--color-navy)]">end-to-end</strong> journey
-              — insight to outcome, POC to production — across every partner in the stack.
+              from insight to outcome, POC to production, across every partner in the stack.
             </p>
             <p className="text-sm text-[var(--color-text-secondary)] mb-8 leading-relaxed">
               FraCTO sits alongside Microsoft, AWS, TCS, Databricks, Snowflake, OpenAI, Anthropic and your internal teams.
-              Not in competition — in orchestration. Platform-agnostic by design, with no billing to protect.
+              Not in competition. In orchestration. Platform-agnostic by design, with no billing to protect.
             </p>
 
-            <StaggerGroup staggerMs={100} className="grid grid-cols-3 gap-4">
+            <StaggerGroup staggerMs={100} className="grid grid-cols-3 gap-4 items-stretch">
               {pillars.map((p) => (
-                <div key={p.label} className="border-l-2 border-[var(--color-teal)]/40 pl-3">
+                <div key={p.label} className="border-l-2 border-[var(--color-teal)]/40 pl-3 flex flex-col h-full">
                   <div className="text-3xl font-bold text-[var(--color-teal)] leading-none font-mono">{p.num}</div>
                   <div className="text-[10px] uppercase tracking-widest font-mono font-bold text-[var(--color-navy)] mt-1">{p.label}</div>
-                  <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mt-2">{p.desc}</p>
+                  <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mt-2 flex-1">{p.desc}</p>
                 </div>
               ))}
             </StaggerGroup>
@@ -59,7 +59,7 @@ export function ChallengeSection() {
           </div>
 
           {/* Image */}
-          <div className="relative aspect-[4/5] md:aspect-[3/4] rounded-sm overflow-hidden order-first md:order-last shadow-lg">
+          <div className="relative aspect-[4/3] md:aspect-[4/3] rounded-sm overflow-hidden order-first md:order-last shadow-lg">
             <Image
               src="/1.png"
               alt="Cross-functional team aligning on a project plan"

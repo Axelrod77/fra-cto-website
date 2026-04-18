@@ -2,7 +2,6 @@
 
 import { useRef } from 'react'
 import Link from 'next/link'
-import { SectionLabel } from '@/components/section-label'
 import { SpringButton } from '@/components/spring-button'
 import { useSpringTransform } from '@/hooks/use-spring-transform'
 
@@ -24,7 +23,6 @@ export function HeroSection() {
         <div className="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Copy */}
           <div className="flex flex-col gap-4 order-2 md:order-1">
-            <SectionLabel text="Fractional CTO for AI Transformation" />
             <h1 className="text-3xl md:text-4xl lg:text-[2.5rem] font-bold tracking-tight text-[var(--color-navy)] leading-[1.15]">
               In 1770, a machine stunned the world by beating grandmasters at chess.
             </h1>
@@ -34,16 +32,16 @@ export function HeroSection() {
               <strong className="text-[var(--color-text-primary)]">A grandmaster analysing, weighing, deciding and manoeuvring the chess board.</strong>
             </p>
             <p className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">
-              250 years later, the same truth holds. AI tools are everywhere &mdash; but without
+              250 years later, the same truth holds. AI tools are everywhere. Without
               a senior technologist inside your org, they&apos;re just theater.
             </p>
             <p className="text-xs md:text-sm text-[var(--color-text-muted)] leading-relaxed">
-              From 20-person startups to 5,000-seat GCCs &mdash; we embed alongside your team.
+              From 20-person startups to 5,000-seat GCCs. We embed alongside your team.
             </p>
           </div>
 
           {/* Video */}
-          <div ref={videoRef} className="relative rounded-2xl overflow-hidden shadow-2xl border border-[var(--color-navy)]/10 order-1 md:order-2 will-change-transform aspect-[4/5] md:aspect-[5/6]">
+          <div ref={videoRef} className="relative rounded-2xl overflow-hidden shadow-2xl border border-[var(--color-navy)]/10 order-1 md:order-2 will-change-transform aspect-[4/5] md:aspect-[1/1]">
             <video
               autoPlay
               loop
