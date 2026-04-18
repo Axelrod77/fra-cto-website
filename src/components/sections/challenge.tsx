@@ -43,7 +43,7 @@ export function ChallengeSection() {
               Not in competition. In orchestration. Platform-agnostic by design, with no billing to protect.
             </p>
 
-            <StaggerGroup staggerMs={100} className="grid grid-cols-3 gap-4 items-stretch">
+            <StaggerGroup staggerMs={100} className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
               {pillars.map((p) => (
                 <div key={p.label} className="border-l-2 border-[var(--color-teal)]/40 pl-3 flex flex-col h-full">
                   <div className="text-3xl font-bold text-[var(--color-teal)] leading-none font-mono">{p.num}</div>

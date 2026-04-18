@@ -59,7 +59,7 @@ export function HeroSection() {
         </div>
 
         {/* CTAs — centered below */}
-        <div className="flex justify-center gap-3 mt-10">
+        <div className="flex justify-center gap-3 mt-6 md:mt-10">
           <Link href="/quick-scan">
             <SpringButton className="bg-[var(--color-teal)] text-white hover:bg-[var(--color-teal-dark)] border-none">
               Take the Quick Scan
@@ -75,7 +75,7 @@ export function HeroSection() {
         </div>
 
         {/* Punchline */}
-        <p ref={punchlineRef} className="text-xl md:text-2xl font-semibold text-[var(--color-navy)] text-center mt-12 will-change-transform">
+        <p ref={punchlineRef} className="text-xl md:text-2xl font-semibold text-[var(--color-navy)] text-center mt-8 md:mt-12 will-change-transform">
           FraCTO is the <span className="text-[var(--color-teal)]">human inside</span> the machine.
         </p>
       </div>

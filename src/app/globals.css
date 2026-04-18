@@ -79,15 +79,39 @@ body {
 }
 
 /* Snap scroll — full-section scrolling (homepage only via .snap-scroll) */
+/* Desktop (≥1024px): header = main bar only ~65px */
 .snap-scroll {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
-  height: calc(100vh - 65px); /* subtract sticky header height */
+  height: calc(100vh - 65px);
 }
-
 .snap-scroll section {
   scroll-snap-align: start;
   min-height: calc(100vh - 65px);
+}
+
+/* Tablet (768–1023px): header includes tagline strip ~93px; use proximity to allow over-height sections */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .snap-scroll {
+    height: calc(100vh - 93px);
+    scroll-snap-type: y proximity;
+  }
+  .snap-scroll section {
+    min-height: calc(100vh - 93px);
+  }
+}
+
+/* Mobile (<768px): disable snap, let sections flow naturally */
+@media (max-width: 767px) {
+  .snap-scroll {
+    scroll-snap-type: none;
+    overflow-y: visible;
+    height: auto;
+  }
+  .snap-scroll section {
+    min-height: unset;
+    scroll-snap-align: none;
+  }
 }
 
 /* Ticker animation for what's_running */
