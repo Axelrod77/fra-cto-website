@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FraCTO — Pretext Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #1B2A3D;
+    --teal: #0097A7;
+    --teal-dark: #00796B;
+    --text-primary: #E0E7EE;
+    --text-secondary: #8B9DAF;
+    --text-muted: #5A6F82;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── Wake/Ripple Canvas (site-wide) ─── */
+  #wake-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ─── Nav ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    backdrop-filter: blur(12px);
+    background: rgba(13, 27, 42, 0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  nav .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+  }
+  nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: 32px;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text-primary); }
+
+  /* ─── Section Label ─── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    color: var(--teal);
+    margin-bottom: 24px;
+  }
+
+  /* ─── Hero Section ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  #hero .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    width: 100%;
+  }
+  #hero .copy h1 {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+  #hero .copy p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+  #hero .copy strong { color: var(--text-primary); }
+
+  /* Turk Canvas Container */
+  .turk-container {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    aspect-ratio: 16/9;
+    background: var(--navy-mid);
+  }
+  #turk-canvas {
+    width: 100%; height: 100%;
+    display: block;
+  }
+  .turk-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+
+  /* Punchline */
+  .punchline {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 72px;
+    color: white;
+  }
+  .punchline .teal { color: var(--teal); }
+
+  /* ─── Verbs Section ─── */
+  #verbs-section {
+    padding: 100px 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: var(--navy-mid);
+  }
+  #verbs-section .section-label {
+    padding-left: 40px;
+    margin-bottom: 40px;
+  }
+
+  .ticker-row {
+    display: flex;
+    white-space: nowrap;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 16px;
+    animation: ticker var(--speed) linear infinite;
+    animation-direction: var(--dir, normal);
+  }
+  .ticker-track[data-paused="true"] {
+    animation-play-state: paused;
+  }
+  .ticker-word {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--word-size, 14px);
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: rgba(0, 151, 167, 0.08);
+    border: 1px solid rgba(0, 151, 167, 0.15);
+    color: var(--teal);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    cursor: default;
+    user-select: none;
+  }
+  .ticker-word:hover {
+    background: rgba(0, 151, 167, 0.2);
+    border-color: rgba(0, 151, 167, 0.4);
+    color: white;
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(0, 151, 167, 0.15);
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── Placeholder Sections ─── */
+  .placeholder-section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .placeholder-section h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .placeholder-section p {
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ─── Footer ─── */
+  footer {
+    border-top: 1px solid var(--teal);
+    padding: 24px 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    #hero .grid { grid-template-columns: 1fr; gap: 40px; }
+    #hero .copy h1 { font-size: 26px; }
+    #hero { padding: 100px 24px 60px; }
+    .placeholder-section { padding: 60px 24px; }
+    .punchline { font-size: 18px; margin-top: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Site-wide wake/ripple canvas -->
+<canvas id="wake-canvas"></canvas>
+
+<!-- Nav -->
+<nav>
+  <div class="logo">fraCTO_</div>
+  <div>
+    <a href="#hero">Home</a>
+    <a href="#verbs-section">The Engine</a>
+    <a href="#challenge">Challenge</a>
+    <a href="#how">How It Works</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="grid">
+    <div class="copy">
+      <div class="section-label">Fractional CTO for Enterprise AI</div>
+      <h1>In 1770, a machine stunned the world by beating grandmasters at chess.</h1>
+      <p>Napoleon played it. Benjamin Franklin studied it. No one could explain how a machine could think so brilliantly. The secret? <strong>A grandmaster hidden inside</strong>, guiding every move.</p>
+      <p>250 years later, the same truth holds. AI tools are everywhere — but without a senior technologist inside your org, they're just theater.</p>
+    </div>
+    <div class="turk-container">
+      <canvas id="turk-canvas"></canvas>
+      <div class="turk-caption">The Mechanical Turk, 1770 — rendered in thought</div>
+    </div>
+  </div>
+  <p class="punchline">FraCTO is the <span class="teal">human inside</span> the machine.</p>
+</section>
+
+<!-- Verbs Section -->
+<section id="verbs-section">
+  <div class="section-label">// what's_running</div>
+  <div id="ticker-container"></div>
+</section>
+
+<!-- Placeholder: Challenge -->
+<section id="challenge" class="placeholder-section">
+  <div class="section-label">The enterprise AI challenge</div>
+  <h2>Misaligned incentives create expensive theater.</h2>
+  <p>Big IT sells seats and hours. Your GCC needs outcomes. Without an independent senior technologist, every vendor pitch sounds equally compelling — and equally expensive.</p>
+</section>
+
+<!-- Placeholder: How It Works -->
+<section id="how" class="placeholder-section">
+  <div class="section-label">How it works</div>
+  <h2>From diagnosis to execution in weeks, not quarters.</h2>
+  <p>We embed a fractional CTO into your GCC — someone with the seniority to challenge vendors, the depth to evaluate architecture, and the independence to tell you what you actually need.</p>
+</section>
+
+<footer>FraCTO — The human inside the machine.</footer>
+
+<script>
+// ─── Word List ───
+const VERBS = [
+  'Accomplishing','Actioning','Actualizing','Architecting','Baking','Beaming','Beboppin\'',
+  'Befuddling','Billowing','Blanching','Bloviating','Boogieing','Boondoggling','Booping',
+  'Bootstrapping','Brewing','Bunning','Burrowing','Calculating','Canoodling','Caramelizing',
+  'Cascading','Catapulting','Cerebrating','Channeling','Channelling','Choreographing',
+  'Churning','Clauding','Coalescing','Cogitating','Combobulating','Composing','Computing',
+  'Concocting','Considering','Contemplating','Cooking','Crafting','Creating','Crunching',
+  'Crystallizing','Cultivating','Deciphering','Deliberating','Determining','Dilly-dallying',
+  'Discombobulating','Doing','Doodling','Drizzling','Ebbing','Effecting','Elucidating',
+  'Embellishing','Enchanting','Envisioning','Evaporating','Fermenting','Fiddle-faddling',
+  'Finagling','Flambéing','Flibbertigibbeting','Flowing','Flummoxing','Fluttering',
+  'Forging','Forming','Frolicking','Frosting','Gallivanting','Galloping','Garnishing',
+  'Generating','Gesticulating','Germinating','Gitifying','Grooving','Gusting',
+  'Harmonizing','Hashing','Hatching','Herding','Honking','Hullaballooing','Hyperspacing',
+  'Ideating','Imagining','Improvising','Incubating','Inferring','Infusing','Ionizing',
+  'Jitterbugging','Julienning','Kneading','Leavening','Levitating','Lollygagging',
+  'Manifesting','Marinating','Meandering','Metamorphosing','Misting','Moonwalking',
+  'Moseying','Mulling','Mustering','Musing','Nebulizing','Nesting','Newspapering',
+  'Noodling','Nucleating','Orbiting','Orchestrating','Osmosing','Perambulating',
+  'Percolating','Perusing','Philosophising','Photosynthesizing','Pollinating','Pondering',
+  'Pontificating','Pouncing','Precipitating','Prestidigitating','Processing','Proofing',
+  'Propagating','Puttering','Puzzling','Quantumizing','Razzle-dazzling','Razzmatazzing',
+  'Recombobulating','Reticulateing','Roosting','Ruminating','Sautéing','Scampering',
+  'Schlepping','Scurrying','Seasoning','Shenaniganing','Shimmying','Simmering',
+  'Skedaddling','Sketching','Slithering','Smooshing','Sock-hopping','Spelunking',
+  'Spinning','Sprouting','Stewing','Sublimating','Swirling','Swooping','Symbioting',
+  'Synthesizing','Tempering','Thinking','Thundering','Tinkering','Tomfoolering',
+  'Topsy-turvying','Transfiguring','Transmuting','Twisting','Undulating','Unfurling',
+  'Unravelling','Vibing','Waddling','Wandering','Warping','Whatchamacalliting',
+  'Whirlpooling','Whirring','Whisking','Wibbling','Working','Wrangling','Zesting','Zigzagging'
+];
+
+// ─────────────────────────────────────────
+// 1. TURK TEXT PORTRAIT (Halftone)
+// ─────────────────────────────────────────
+(function initTurkPortrait() {
+  const canvas = document.getElementById('turk-canvas');
+  const ctx = canvas.getContext('2d');
+  const container = canvas.parentElement;
+
+  // Load the turk image — we'll embed as base64 from the extracted frame
+  // For the demo, we draw a silhouette programmatically
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+
+  // We'll generate the portrait once the image loads
+  let words = [];
+  let animFrame;
+  let time = 0;
+
+  function resize() {
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    return { w: rect.width, h: rect.height };
+  }
+
+  function generatePortrait() {
+    const { w, h } = resize();
+
+    // Draw image to offscreen canvas to sample pixels
+    const offscreen = document.createElement('canvas');
+    offscreen.width = w;
+    offscreen.height = h;
+    const offCtx = offscreen.getContext('2d');
+
+    // Draw image covering the canvas
+    const imgAspect = img.naturalWidth / img.naturalHeight;
+    const canAspect = w / h;
+    let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+    if (imgAspect > canAspect) {
+      sw = img.naturalHeight * canAspect;
+      sx = (img.naturalWidth - sw) / 2;
+    } else {
+      sh = img.naturalWidth / canAspect;
+      sy = (img.naturalHeight - sh) / 2;
+    }
+    offCtx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+    const imageData = offCtx.getImageData(0, 0, w, h);
+    const pixels = imageData.data;
+
+    // Sample the image in a grid and place words where there's detail
+    words = [];
+    const cellH = 16; // vertical spacing
+    const minFontSize = 7;
+    const maxFontSize = 13;
+    let verbIndex = 0;
+
+    for (let y = cellH; y < h - cellH; y += cellH) {
+      let x = 8;
+      while (x < w - 20) {
+        const px = (Math.floor(y) * w + Math.floor(x)) * 4;
+        const r = pixels[px], g = pixels[px + 1], b = pixels[px + 2];
+        const brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+
+        // Map brightness to font size — darker = larger text (more "ink")
+        const fontSize = minFontSize + (1 - brightness) * (maxFontSize - minFontSize);
+
+        // Only place word if there's enough contrast (not pure black background)
+        if (brightness > 0.05 && brightness < 0.95) {
+          const word = VERBS[verbIndex % VERBS.length];
+          verbIndex++;
+
+          ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+          const measured = ctx.measureText(word);
+          const wordWidth = measured.width;
+
+          // Color from original image
+          const alpha = 0.3 + (1 - brightness) * 0.6;
+
+          words.push({
+            text: word,
+            x: x,
+            y: y,
+            baseX: x,
+            baseY: y,
+            fontSize,
+            width: wordWidth,
+            r, g, b,
+            alpha,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.3 + Math.random() * 0.5,
+          });
+
+          x += wordWidth + 6;
+        } else {
+          x += 12;
+        }
+      }
+    }
+  }
+
+  function drawTurk() {
+    time += 0.016;
+    const { w, h } = { w: canvas.width / window.devicePixelRatio, h: canvas.height / window.devicePixelRatio };
+    ctx.clearRect(0, 0, w, h);
+
+    // Subtle background
+    ctx.fillStyle = 'rgba(13, 27, 42, 1)';
+    ctx.fillRect(0, 0, w, h);
+
+    for (const word of words) {
+      // Subtle breathing animation
+      const breathe = Math.sin(time * word.speed + word.phase) * 0.08;
+      const currentAlpha = Math.max(0.1, Math.min(1, word.alpha + breathe));
+
+      ctx.font = `${word.fontSize}px 'JetBrains Mono', monospace`;
+      ctx.fillStyle = `rgba(${word.r}, ${word.g}, ${word.b}, ${currentAlpha})`;
+      ctx.fillText(word.text, word.x, word.y);
+    }
+
+    animFrame = requestAnimationFrame(drawTurk);
+  }
+
+  // Try loading the turk image — use a data approach
+  // For demo, we'll draw a generated version using a proxy image
+  img.onload = () => {
+    generatePortrait();
+    drawTurk();
+  };
+
+  // Try to load from same directory
+  img.src = 'turk-frame.png';
+
+  // Fallback: generate without image
+  img.onerror = () => {
+    // Create a synthetic turk silhouette
+    const { w, h } = resize();
+    const offscreen = document.createElement('canvas');
+    offscreen.width = w;
+    offscreen.height = h;
+    const offCtx = offscreen.getContext('2d');
+
+    // Draw a stylized figure silhouette
+    offCtx.fillStyle = '#000';
+    offCtx.fillRect(0, 0, w, h);
+
+    // Head
+    offCtx.fillStyle = '#8B4513';
+    offCtx.beginPath();
+    offCtx.ellipse(w * 0.5, h * 0.2, w * 0.08, h * 0.1, 0, 0, Math.PI * 2);
+    offCtx.fill();
+
+    // Hat
+    offCtx.fillStyle = '#A0522D';
+    offCtx.fillRect(w * 0.44, h * 0.08, w * 0.12, h * 0.08);
+
+    // Body
+    offCtx.fillStyle = '#CD5C5C';
+    offCtx.beginPath();
+    offCtx.moveTo(w * 0.38, h * 0.28);
+    offCtx.lineTo(w * 0.62, h * 0.28);
+    offCtx.lineTo(w * 0.58, h * 0.55);
+    offCtx.lineTo(w * 0.42, h * 0.55);
+    offCtx.fill();
+
+    // Table
+    offCtx.fillStyle = '#8B6914';
+    offCtx.fillRect(w * 0.2, h * 0.55, w * 0.6, h * 0.05);
+    offCtx.fillStyle = '#6B4F12';
+    offCtx.fillRect(w * 0.22, h * 0.6, w * 0.56, h * 0.3);
+
+    // Bookshelves left and right
+    offCtx.fillStyle = '#3E2723';
+    offCtx.fillRect(0, 0, w * 0.18, h);
+    offCtx.fillRect(w * 0.82, 0, w * 0.18, h);
+
+    // Shelf lines
+    offCtx.fillStyle = '#5D4037';
+    for (let sy = 0; sy < h; sy += h * 0.12) {
+      offCtx.fillRect(0, sy, w * 0.18, 2);
+      offCtx.fillRect(w * 0.82, sy, w * 0.18, 2);
+      // Book colors
+      for (let bx = 3; bx < w * 0.17; bx += 8) {
+        const bookH = h * 0.1;
+        offCtx.fillStyle = `hsl(${Math.random()*60+10}, ${30+Math.random()*30}%, ${25+Math.random()*20}%)`;
+        offCtx.fillRect(bx, sy + 3, 6, bookH - 5);
+      }
+      for (let bx = w * 0.83; bx < w - 3; bx += 8) {
+        const bookH = h * 0.1;
+        offCtx.fillStyle = `hsl(${Math.random()*60+10}, ${30+Math.random()*30}%, ${25+Math.random()*20}%)`;
+        offCtx.fillRect(bx, sy + 3, 6, bookH - 5);
+      }
+    }
+
+    // Use offscreen as our source
+    const fakeImg = offscreen;
+    const imgData = offCtx.getImageData(0, 0, w, h);
+
+    // Now generate words from this
+    words = [];
+    const cellH = 16;
+    const minFontSize = 7;
+    const maxFontSize = 13;
+    let verbIndex = 0;
+
+    for (let y = cellH; y < h - cellH; y += cellH) {
+      let x = 8;
+      while (x < w - 20) {
+        const px = (Math.floor(y) * w + Math.floor(x)) * 4;
+        const r = imgData.data[px], g = imgData.data[px+1], b = imgData.data[px+2];
+        const brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+        const fontSize = minFontSize + (1 - brightness) * (maxFontSize - minFontSize);
+
+        if (brightness > 0.05) {
+          const word = VERBS[verbIndex % VERBS.length];
+          verbIndex++;
+          ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+          const wordWidth = ctx.measureText(word).width;
+          const alpha = 0.3 + (1 - brightness) * 0.6;
+
+          words.push({
+            text: word, x, y, baseX: x, baseY: y,
+            fontSize, width: wordWidth,
+            r, g, b, alpha,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.3 + Math.random() * 0.5,
+          });
+          x += wordWidth + 6;
+        } else {
+          x += 12;
+        }
+      }
+    }
+
+    drawTurk();
+  };
+
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(animFrame);
+    if (img.complete && img.naturalWidth) {
+      generatePortrait();
+    }
+  });
+})();
+
+
+// ─────────────────────────────────────────
+// 2. TICKER / MARQUEE SECTION
+// ─────────────────────────────────────────
+(function initTicker() {
+  const container = document.getElementById('ticker-container');
+  const rowCount = 5;
+  const sizes = ['12px', '14px', '16px', '14px', '12px'];
+  const speeds = ['45s', '55s', '38s', '50s', '42s'];
+  const directions = ['normal', 'reverse', 'normal', 'reverse', 'normal'];
+
+  for (let r = 0; r < rowCount; r++) {
+    const row = document.createElement('div');
+    row.className = 'ticker-row';
+
+    const track = document.createElement('div');
+    track.className = 'ticker-track';
+    track.style.setProperty('--speed', speeds[r]);
+    track.style.setProperty('--dir', directions[r]);
+
+    // Shuffle words for this row
+    const shuffled = [...VERBS].sort(() => Math.random() - 0.5);
+
+    // Need two copies for seamless loop
+    for (let copy = 0; copy < 2; copy++) {
+      for (const word of shuffled) {
+        const span = document.createElement('span');
+        span.className = 'ticker-word';
+        span.style.setProperty('--word-size', sizes[r]);
+        span.textContent = word;
+        track.appendChild(span);
+      }
+    }
+
+    row.appendChild(track);
+    container.appendChild(row);
+  }
+})();
+
+
+// ─────────────────────────────────────────
+// 3. SITE-WIDE WAKE / RIPPLE EFFECT
+// ─────────────────────────────────────────
+(function initWakeRipple() {
+  const canvas = document.getElementById('wake-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let w, h;
+  function resize() {
+    w = canvas.width = window.innerWidth * window.devicePixelRatio;
+    h = canvas.height = window.innerHeight * window.devicePixelRatio;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+  resize();
+  window.addEventListener('resize', () => {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    resize();
+  });
+
+  // Particle pool
+  const particles = [];
+  const MAX_PARTICLES = 60;
+  let mouseX = -1000, mouseY = -1000;
+  let lastMouseX = -1000, lastMouseY = -1000;
+  let lastSpawnTime = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  document.addEventListener('mouseleave', () => {
+    mouseX = -1000;
+    mouseY = -1000;
+  });
+
+  function spawnWord(x, y) {
+    if (particles.length >= MAX_PARTICLES) return;
+
+    const word = VERBS[Math.floor(Math.random() * VERBS.length)];
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 30 + Math.random() * 60;
+    const fontSize = 9 + Math.random() * 5;
+
+    particles.push({
+      text: word,
+      x: x + Math.cos(angle) * 20,
+      y: y + Math.sin(angle) * 20,
+      targetX: x + Math.cos(angle) * distance,
+      targetY: y + Math.sin(angle) * distance,
+      fontSize,
+      alpha: 0,
+      maxAlpha: 0.15 + Math.random() * 0.25,
+      life: 1.0,
+      decay: 0.008 + Math.random() * 0.012,
+      vx: Math.cos(angle) * 0.5,
+      vy: Math.sin(angle) * 0.5 - 0.3, // slight upward drift
+      rotation: (Math.random() - 0.5) * 0.3,
+    });
+  }
+
+  function update() {
+    const dpr = window.devicePixelRatio;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.scale(dpr, dpr);
+
+    const now = performance.now();
+    const dx = mouseX - lastMouseX;
+    const dy = mouseY - lastMouseY;
+    const speed = Math.sqrt(dx * dx + dy * dy);
+
+    // Spawn words based on cursor movement speed
+    if (speed > 3 && now - lastSpawnTime > 80) {
+      const count = Math.min(3, Math.floor(speed / 20) + 1);
+      for (let i = 0; i < count; i++) {
+        spawnWord(mouseX, mouseY);
+      }
+      lastSpawnTime = now;
+    }
+
+    lastMouseX = mouseX;
+    lastMouseY = mouseY;
+
+    // Update and draw particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+
+      // Fade in quickly, then decay
+      if (p.life > 0.8) {
+        p.alpha = Math.min(p.maxAlpha, p.alpha + 0.04);
+      } else {
+        p.alpha = p.maxAlpha * (p.life / 0.8);
+      }
+
+      p.life -= p.decay;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy -= 0.01; // gentle float up
+
+      if (p.life <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.font = `${p.fontSize}px 'JetBrains Mono', monospace`;
+      ctx.fillStyle = `rgba(0, 151, 167, ${p.alpha})`;
+      ctx.fillText(p.text, 0, 0);
+      ctx.restore();
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FraCTO — Hero Concept Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #F7F9FB; color: #263238; }
+
+  /* ── Design tokens ── */
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #112636;
+    --teal: #0097A7;
+    --teal-dark: #00838F;
+    --bg: #F7F9FB;
+    --muted: #EDF2F7;
+    --charcoal: #263238;
+    --blue-grey: #78909C;
+    --slate: #CFD8DC;
+    --teal-20: rgba(0,151,167,0.2);
+  }
+
+  /* ── Tab switcher ── */
+  .tab-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; background: #0a1420; border-bottom: 1px solid #1a3a5c;
+  }
+  .tab-bar button {
+    flex: 1; padding: 14px 12px; border: none; background: transparent;
+    color: var(--blue-grey); font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent;
+  }
+  .tab-bar button.active { color: var(--teal); border-bottom-color: var(--teal); background: var(--navy); }
+  .tab-bar button:hover:not(.active) { color: #B0BEC5; background: #0e1e30; }
+
+  .concept { display: none; padding-top: 52px; }
+  .concept.active { display: block; }
+
+  /* ── Sticky header ── */
+  .site-header {
+    position: sticky; top: 52px; z-index: 100;
+    background: rgba(247,249,251,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--slate); padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark { width: 32px; height: 32px; background: var(--teal); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .logo-mark span { color: white; font-weight: 800; font-size: 14px; }
+  .logo-text { font-weight: 700; font-size: 18px; color: var(--charcoal); letter-spacing: -0.02em; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { text-decoration: none; color: var(--blue-grey); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--charcoal); }
+
+  /* ── Shared components ── */
+  .badge {
+    display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 999px;
+    background: var(--navy-mid); color: var(--teal); font-size: 13px; font-weight: 500;
+    border: 1px solid var(--teal-20); margin-bottom: 24px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 14px 32px; background: var(--teal); color: #fff; border: none;
+    border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: background 0.2s; text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-outline {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 14px 32px; background: transparent; color: #fff;
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all 0.2s; text-decoration: none;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.08); }
+  .btn-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .teal { color: var(--teal); }
+
+  .section { padding: 80px 24px; }
+  .section-muted { background: var(--muted); }
+  .section-navy { background: var(--navy); }
+  .container { max-width: 1000px; margin: 0 auto; }
+  .container-narrow { max-width: 640px; margin: 0 auto; }
+
+  h2.section-title {
+    font-size: clamp(24px, 3vw, 32px); font-weight: 700; color: var(--charcoal);
+    margin-bottom: 16px; text-align: center;
+  }
+  .section-subtitle {
+    color: var(--blue-grey); text-align: center; max-width: 600px;
+    margin: 0 auto 48px; font-size: 15px; line-height: 1.7;
+  }
+
+  /* ── Cards ── */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card {
+    background: #fff; border: 1px solid var(--slate); border-radius: 12px;
+    padding: 24px; transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--teal); }
+  .card h3 { font-size: 16px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
+  .card p { font-size: 14px; color: var(--blue-grey); line-height: 1.7; }
+
+  .card-problem { border-left: 3px solid var(--teal); }
+  .card-founder { border-top: 3px solid var(--teal); }
+
+  /* ── How it works ── */
+  .step-circle {
+    width: 48px; height: 48px; border-radius: 50%; background: var(--teal);
+    color: #fff; font-weight: 700; font-size: 18px;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .step h3 { font-size: 18px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; text-align: center; }
+  .step p { font-size: 14px; color: var(--blue-grey); line-height: 1.7; text-align: center; }
+  .step .step-cta { color: var(--teal); font-size: 14px; font-weight: 600; margin-top: 12px; display: inline-block; text-decoration: none; }
+
+  /* ── Services ── */
+  .service-duration { font-size: 12px; color: var(--blue-grey); margin-bottom: 16px; }
+  .service-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .service-list li { font-size: 14px; color: var(--blue-grey); display: flex; align-items: flex-start; gap: 8px; }
+  .service-list li::before { content: '\2713'; color: var(--teal); font-weight: 600; flex-shrink: 0; }
+
+  /* ── Founder credential ── */
+  .credential { font-size: 12px; font-weight: 500; color: var(--teal); margin-top: 16px; }
+
+  /* ── Video placeholder ── */
+  .video-placeholder {
+    width: 100%; aspect-ratio: 4/3; background: #1a2a3a; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5); overflow: hidden;
+  }
+  .video-placeholder::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,151,167,0.1), transparent 70%);
+  }
+  .video-placeholder .icon { font-size: 56px; margin-bottom: 12px; opacity: 0.3; position: relative; }
+  .video-placeholder .label { font-size: 13px; color: var(--blue-grey); position: relative; }
+  .video-placeholder .sublabel { font-size: 11px; color: #546E7A; margin-top: 4px; position: relative; }
+  .video-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    padding: 12px 16px;
+  }
+  .video-caption p { font-size: 12px; color: rgba(255,255,255,0.6); font-style: italic; }
+
+  /* ── Express Interest section ── */
+  .ei-form { background: #fff; border-radius: 12px; padding: 32px; }
+  .ei-form label { display: block; font-size: 13px; font-weight: 500; color: var(--charcoal); margin-bottom: 6px; }
+  .ei-form input, .ei-form textarea {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--slate); border-radius: 8px;
+    font-family: inherit; font-size: 14px; margin-bottom: 16px; background: var(--bg);
+    color: var(--charcoal); outline: none; transition: border-color 0.2s;
+  }
+  .ei-form input:focus, .ei-form textarea:focus { border-color: var(--teal); }
+  .ei-form textarea { resize: vertical; min-height: 100px; }
+  .ei-form .btn-primary { width: 100%; justify-content: center; margin-top: 8px; }
+
+  /* ── Footer ── */
+  .site-footer {
+    background: var(--navy); padding: 40px 24px; text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .site-footer .footer-logo { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 16px; }
+  .site-footer .footer-logo .logo-text { color: #fff; }
+  .site-footer .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 16px; }
+  .site-footer .footer-links a { color: var(--blue-grey); text-decoration: none; font-size: 13px; }
+  .site-footer .footer-links a:hover { color: #fff; }
+  .site-footer .copyright { font-size: 12px; color: #546E7A; }
+
+  /* ── Concept label ── */
+  .concept-label {
+    position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+    background: var(--navy-mid); border: 1px solid var(--teal-20);
+    padding: 10px 18px; border-radius: 10px; font-size: 13px; color: var(--blue-grey);
+  }
+  .concept-label strong { color: var(--teal); }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .split-grid { grid-template-columns: 1fr !important; }
+    .split-grid .video-side { order: 1; }
+    .split-grid .copy-side { order: 2; }
+    .nav-links { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="tab-bar">
+  <button class="active" onclick="show('a')">A: Video-First Mystery</button>
+  <button onclick="show('b')">B: Split Hero</button>
+  <button onclick="show('c')">C: Cinematic Reveal</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- OPTION A                                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="concept-a" class="concept active">
+
+  <header class="site-header">
+    <a href="#" class="logo">
+      <div class="logo-mark"><span>F</span></div>
+      <span class="logo-text">FraCTO</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#">Quick Scan</a>
+      <a href="#">Express Interest</a>
+    </nav>
+  </header>
+
+  <!-- Hero A: Video-first mystery -->
+  <section class="section-navy" style="padding:100px 24px 80px;text-align:center;">
+    <div class="container" style="display:flex;flex-direction:column;align-items:center;">
+      <div style="max-width:580px;width:100%;margin-bottom:48px;">
+        <div class="video-placeholder" style="aspect-ratio:16/10;">
+          <div class="icon">&#9823;</div>
+          <div class="label">turk.mp4 autoplays here</div>
+          <div class="sublabel">Looped, muted</div>
+          <div class="video-caption"><p>The Mechanical Turk, 1770</p></div>
+        </div>
+      </div>
+      <p style="font-size:clamp(17px,2.2vw,22px);color:var(--blue-grey);font-style:italic;margin-bottom:12px;">
+        In 1770, a machine beat the world&rsquo;s best chess players.
+      </p>
+      <h1 style="font-size:clamp(30px,4.5vw,52px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:20px;">
+        The secret was the <span class="teal">human inside.</span>
+      </h1>
+      <p style="font-size:16px;color:var(--blue-grey);max-width:540px;line-height:1.7;margin-bottom:36px;">
+        Independent advisory for enterprises navigating AI transformation.
+        No vendor bias. No headcount incentives. Just honest strategy and embedded execution.
+      </p>
+      <div class="btn-row" style="justify-content:center;">
+        <a href="#" class="btn-primary">Take the Quick Scan</a>
+        <a href="#" class="btn-outline">Express Interest</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rest of page (shared) injected by JS -->
+  <div class="shared-sections"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- OPTION B                                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="concept-b" class="concept">
+
+  <header class="site-header">
+    <a href="#" class="logo">
+      <div class="logo-mark"><span>F</span></div>
+      <span class="logo-text">FraCTO</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#">Quick Scan</a>
+      <a href="#">Express Interest</a>
+    </nav>
+  </header>
+
+  <!-- Hero B: Split hero -->
+  <section class="section-navy" style="padding:100px 24px 80px;">
+    <div class="container" style="max-width:1100px;">
+      <div class="split-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+        <!-- Video -->
+        <div class="video-side">
+          <div class="video-placeholder">
+            <div class="icon">&#9823;</div>
+            <div class="label">turk.mp4 autoplays here</div>
+            <div class="sublabel">Looped, muted</div>
+            <div class="video-caption"><p>The Mechanical Turk, 1770</p></div>
+          </div>
+        </div>
+        <!-- Copy -->
+        <div class="copy-side" style="display:flex;flex-direction:column;gap:20px;">
+          <div class="badge">Fractional CTO for Enterprise AI</div>
+          <h1 style="font-size:clamp(24px,3vw,36px);font-weight:800;color:#fff;line-height:1.25;">
+            In 1770, a machine stunned the world by beating grandmasters at chess.
+          </h1>
+          <p style="font-size:15px;color:var(--blue-grey);line-height:1.75;">
+            Napoleon played it. Benjamin Franklin studied it. No one could explain how a machine could think so brilliantly.
+            The secret? <strong style="color:#B0BEC5;">A grandmaster hidden inside</strong>, guiding every move.
+          </p>
+          <p style="font-size:15px;color:var(--blue-grey);line-height:1.75;">
+            250 years later, the same truth holds. AI tools are everywhere &mdash; but without a senior technologist inside your org, they&rsquo;re just theater.
+          </p>
+          <p style="font-size:20px;font-weight:700;color:#fff;border-left:3px solid var(--teal);padding-left:16px;">
+            FraCTO is the <span class="teal">human inside</span> the machine.
+          </p>
+          <div class="btn-row" style="margin-top:8px;">
+            <a href="#" class="btn-primary">Take the Quick Scan</a>
+            <a href="#" class="btn-outline">Express Interest</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shared-sections"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- OPTION C                                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="concept-c" class="concept">
+
+  <header class="site-header">
+    <a href="#" class="logo">
+      <div class="logo-mark"><span>F</span></div>
+      <span class="logo-text">FraCTO</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#">Quick Scan</a>
+      <a href="#">Express Interest</a>
+    </nav>
+  </header>
+
+  <!-- Hero C: Cinematic reveal -->
+  <section class="section-navy" style="padding:0;position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+    <!-- BG video -->
+    <div style="position:absolute;inset:0;z-index:0;">
+      <div class="video-placeholder" style="width:100%;height:100%;border-radius:0;border:none;box-shadow:none;aspect-ratio:auto;">
+        <div class="icon">&#9823;</div>
+        <div class="label">turk.mp4 plays fullscreen behind overlay</div>
+        <div class="sublabel">Dimmed, atmospheric</div>
+      </div>
+    </div>
+    <!-- Overlay -->
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(13,27,42,0.85),rgba(13,27,42,0.65) 40%,rgba(13,27,42,0.85) 70%,rgba(13,27,42,0.95));"></div>
+    <!-- Content -->
+    <div style="position:relative;z-index:2;padding:120px 24px 80px;text-align:center;display:flex;flex-direction:column;align-items:center;">
+      <div class="badge">Fractional CTO for Enterprise AI</div>
+      <h1 style="font-size:clamp(32px,5vw,56px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:24px;">
+        It looks like AI.<br>
+        It works because of the<br>
+        <span class="teal">human inside.</span>
+      </h1>
+      <p style="font-size:17px;color:var(--blue-grey);max-width:540px;line-height:1.7;margin-bottom:40px;">
+        Independent advisory for enterprises navigating AI transformation.
+        No vendor bias. No headcount incentives. Just honest strategy and embedded execution.
+      </p>
+      <div class="btn-row" style="justify-content:center;margin-bottom:56px;">
+        <a href="#" class="btn-primary">Take the Quick Scan</a>
+        <a href="#" class="btn-outline">Express Interest</a>
+      </div>
+      <!-- Story teaser -->
+      <div style="max-width:500px;padding:24px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);text-align:left;">
+        <p style="font-size:14px;color:var(--blue-grey);line-height:1.7;">
+          In 1770, a machine beat the world&rsquo;s greatest chess players. Emperors marveled.
+          Scientists were baffled. The secret? A grandmaster hidden inside, guiding every move.
+        </p>
+        <span style="display:inline-flex;align-items:center;gap:6px;color:var(--teal);font-size:13px;font-weight:600;margin-top:12px;cursor:pointer;">
+          The story behind FraCTO &darr;
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <div class="shared-sections"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- Shared page sections (cloned into each concept)          -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<template id="shared-template">
+
+  <!-- The Problem -->
+  <section class="section section-muted">
+    <div class="container">
+      <h2 class="section-title">Why enterprises get stuck</h2>
+      <p class="section-subtitle">
+        Your Big IT partners have a conflict of interest. Automation cannibalizes their headcount model.
+        They&rsquo;ll slow-walk your transformation while billing for the delay.
+      </p>
+      <div class="card-grid">
+        <div class="card card-problem">
+          <h3>No honest assessment</h3>
+          <p>Legacy partners can&rsquo;t recommend eliminating roles they profit from.</p>
+        </div>
+        <div class="card card-problem">
+          <h3>Strategy without execution</h3>
+          <p>Consultancies deliver decks, then disappear. Plans collect dust.</p>
+        </div>
+        <div class="card card-problem">
+          <h3>Internal silos</h3>
+          <p>CIOs freeze on failure stats. Teams resist change. Nobody owns the cross-cutting work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <div class="card-grid" style="margin-top:48px;">
+        <div class="step">
+          <div class="step-circle">1</div>
+          <h3>Quick Scan</h3>
+          <p>14 questions, 5 minutes. Get your digital maturity score across 12 dimensions. Free, no sign-up.</p>
+          <a href="#" class="step-cta">Take Quick Scan &rarr;</a>
+        </div>
+        <div class="step">
+          <div class="step-circle">2</div>
+          <h3>Diagnostic</h3>
+          <p>Expert interviews, architecture review, gap analysis, and a board-ready roadmap. Fixed fee, 2-3 weeks.</p>
+        </div>
+        <div class="step">
+          <div class="step-circle">3</div>
+          <h3>Fractional CTO</h3>
+          <p>A senior technologist embedded in your org. Not just advice &mdash; execution. Kill redundant tools, ship quick wins, navigate stakeholders.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founders -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Who&rsquo;s behind FraCTO</h2>
+      <p class="section-subtitle">
+        Three founders with complementary expertise &mdash; enterprise IT, business building, and AI engineering.
+      </p>
+      <div class="card-grid">
+        <div class="card card-founder">
+          <h3>Senior IT Leader</h3>
+          <p>Decades of experience leading IT transformations at scale. Has managed the exact vendor ecosystems, partner dynamics, and organizational politics that FraCTO helps clients navigate.</p>
+          <div class="credential">MBA, SP Jain Inst of Mgmt.</div>
+        </div>
+        <div class="card card-founder">
+          <h3>Serial Entrepreneur</h3>
+          <p>Track record of building and scaling businesses. Brings commercial acumen, market positioning, and the ability to turn a capability into a business.</p>
+          <div class="credential">MBA, INSEAD</div>
+        </div>
+        <div class="card card-founder">
+          <h3>AI-Native Technologist</h3>
+          <p>Functional and technical knowledge with AI-first thinking. Builds the assessment platform, designs the AI skills, and ensures every recommendation is technically sound.</p>
+          <div class="credential">MBA, IIM &amp; B.E. IIT Delhi</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Services</h2>
+      <div class="card-grid" style="margin-top:32px;">
+        <div class="card">
+          <h3>Diagnostic</h3>
+          <div class="service-duration">2-3 weeks</div>
+          <ul class="service-list">
+            <li>Expert interviews</li>
+            <li>Architecture review</li>
+            <li>CMDB analysis</li>
+            <li>3-horizon roadmap</li>
+            <li>Board-ready deck</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Fractional CTO</h3>
+          <div class="service-duration">Ongoing</div>
+          <ul class="service-list">
+            <li>Embedded senior technologist</li>
+            <li>Execution oversight</li>
+            <li>Vendor evaluation</li>
+            <li>Stakeholder navigation</li>
+            <li>Quick wins from Week 1</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>AI Projects</h3>
+          <div class="service-duration">4-8 weeks</div>
+          <ul class="service-list">
+            <li>AI skills deployment</li>
+            <li>Automation program setup</li>
+            <li>Custom AI solutions</li>
+            <li>End-to-end delivery</li>
+            <li>Knowledge transfer</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Express Interest -->
+  <section class="section section-navy">
+    <div class="container-narrow">
+      <h2 style="font-size:clamp(24px,3vw,32px);font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Express Interest</h2>
+      <p style="color:var(--blue-grey);text-align:center;margin-bottom:32px;font-size:15px;">
+        Tell us about your organization and we&rsquo;ll reach out to discuss how we can help.
+      </p>
+      <div class="ei-form">
+        <label>Name *</label>
+        <input type="text" placeholder="Your full name">
+        <label>Email *</label>
+        <input type="email" placeholder="work@company.com">
+        <label>Company *</label>
+        <input type="text" placeholder="Company name">
+        <label>Role / Title</label>
+        <input type="text" placeholder="e.g. VP Engineering">
+        <label>Message</label>
+        <textarea placeholder="Tell us about your AI ambitions or challenges..."></textarea>
+        <button class="btn-primary">Submit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-logo">
+      <div class="logo-mark"><span>F</span></div>
+      <span class="logo-text" style="color:#fff;">FraCTO</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Quick Scan</a>
+      <a href="#">Express Interest</a>
+    </div>
+    <div class="copyright">&copy; 2026 FraCTO. All rights reserved.</div>
+  </footer>
+</template>
+
+<div class="concept-label" id="label"><strong>Option A</strong> &mdash; Video-First Mystery</div>
+
+<script>
+  // Clone shared sections into each concept
+  const template = document.getElementById('shared-template');
+  document.querySelectorAll('.shared-sections').forEach(container => {
+    container.appendChild(template.content.cloneNode(true));
+  });
+
+  const labels = {
+    a: '<strong>Option A</strong> &mdash; Video-First Mystery',
+    b: '<strong>Option B</strong> &mdash; Split Hero',
+    c: '<strong>Option C</strong> &mdash; Cinematic Reveal'
+  };
+  function show(id) {
+    document.querySelectorAll('.concept').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-bar button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('concept-' + id).classList.add('active');
+    document.querySelectorAll('.tab-bar button')[{a:0,b:1,c:2}[id]].classList.add('active');
+    document.getElementById('label').innerHTML = labels[id];
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
